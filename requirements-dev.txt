@@ -1,0 +1,8 @@
+grpcio==1.53.0
+grpcio-tools==1.53.0
+grpcio-status=1.53.0
+protobuf==4.22.1
+eth_account
+python-dotenv
+eth_utils=2.1.0
+web3=6.1.0

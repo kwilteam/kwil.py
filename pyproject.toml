@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptool.build_meta"
+
+[project]
+name = "kwil"
+description = ''
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "yaiba", email = "4yaiba@gmail.com" },
+]
+classifiers = [
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: Implementation :: CPython",
+
+]
+dependencies = [
+  "",]
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/unknown/kwil-sdk#readme"
+Issues = "https://github.com/unknown/kwil-sdk/issues"
+Source = "https://github.com/unknown/kwil-sdk"
+
+[project.scripts]
+cli-name = ""
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "kwil/__about__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
