@@ -8,7 +8,6 @@ from kwil.types import (
     DBIdentifier,
     HexAddress,
     TxParams,
-    TxData,
     TxReceipt,
     AccountInfo,
     DBSchema,
@@ -25,8 +24,8 @@ class BaseKwild(Module):
         self.cfg = self.get_config()
         self.logger.debug("KwilChain config: %s", self.cfg)
 
-    def get_block(self, block_id):
-        return self.kwil.manager.request_blocking(GRPC.kwil_getBlock, [block_id])
+    # def get_block(self, block_id):
+    #     return self.kwil.manager.request_blocking(GRPC.kwil_getBlock, [block_id])
 
     ping: Method[Callable[[], bool]] = Method(GRPC.kwil_ping)
     get_config: Method[Callable[[], ServiceConfig]] = Method(GRPC.kwil_getConfig)
@@ -40,3 +39,4 @@ class Kwild(BaseKwild):
     get_account: Method[Callable[[HexAddress], AccountInfo]] = Method(GRPC.kwil_getAccount)
     broadcast: Method[Callable[[TxParams], TxReceipt]] = Method(GRPC.kwil_broadcast)
     estimate_price: Method[Callable[[TxParams], str]] = Method(GRPC.kwil_estimatePrice)
+    query: Method[Callable[[DBIdentifier, str], TxReceipt]] = Method(GRPC.kwil_query)

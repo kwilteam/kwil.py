@@ -1,8 +1,10 @@
 from eth_account import Account
+
 from web3 import Web3
 
 from kwil.kwil_typing.kvm import HexStr
 from kwil.types import Signature, SignatureType
+
 
 
 def sign(data: bytes, private_key: HexStr) -> Signature:

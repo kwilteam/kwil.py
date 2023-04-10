@@ -1,7 +1,7 @@
 import logging
 from typing import List, Tuple, Any, Optional
 
-from kwil.types import RPCResponse
+from kwil.types import RPCResponse, Middleware
 from kwil.provider import BaseProvider, AutoProvider
 from kwil.exceptions import BadResponseFormat
 
@@ -14,13 +14,18 @@ class RequestManager:
     def __init__(
             self,
             kwil: "Kwil",
-            provider: Optional[BaseProvider] = None):
+            provider: Optional[BaseProvider] = None,
+            # middlewares: Optional[List[Tuple[str, Middleware]]] = None,
+    ):
         self.kwil = kwil
 
         if provider is None:
             self.provider = AutoProvider()
         else:
             self.provider = provider
+
+        # if middlewares is None:
+        #     self.middlewares = self.default_middlewares()
 
     @property
     def provider(self) -> BaseProvider:
@@ -30,11 +35,12 @@ class RequestManager:
     def provider(self, provider: BaseProvider) -> None:
         self._provider = provider
 
-    @staticmethod
-    def default_middlewares() -> List[Tuple[str, str]]:
-        return List[Tuple[str, str]]()
+    # @staticmethod
+    # def default_middlewares() -> List[Tuple[Middleware]]:
+    #     return ()
 
     def _make_request(self, method, params: Any) -> RPCResponse:
+        # request_func = self.provider.request_func(self.middlewares)
         request_func = self.provider.request_func()
         self.logger.debug("request %s", method)
         return request_func(method, params)

@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 @curry
 def _apply_result_formatters(
-    method: RPCEndpoint, result_formatters: Callable[..., Any], result: Any
+    method: RPCEndpoint, result_formatters: Callable[..., TReturn], result: Any
 ) -> Any:
     if result_formatters:
         logger.debug("apply result formatter to '%s'", method)
@@ -27,8 +27,6 @@ class Module:
     def caller_fn(self, kwil: "Kwil", method: Method[Callable[..., Any]]) -> Callable[..., Any]:
         def caller(*args: Any) -> Any:
             (method_str, args), response_formatters = method.process_params(self, *args)
-            result_formatters = response_formatters
-            result = kwil.manager.request_blocking(method_str,
-                                                   args)
-            return _apply_result_formatters(method.rpc_method, result_formatters, result)
+            result = kwil.manager.request_blocking(method_str, args)
+            return _apply_result_formatters(method.rpc_method, response_formatters, result)
         return caller

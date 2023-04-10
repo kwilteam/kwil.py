@@ -42,3 +42,8 @@ exclude_lines = [
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
 ]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests as integration test (deselect with '-m \"not integration\"')",
+]

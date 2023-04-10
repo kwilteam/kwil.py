@@ -1,19 +1,40 @@
 import logging
-from typing import Callable, Tuple, Any, Dict
+from typing import Callable, Tuple, Any, Dict, Tuple, List
 
 from google.protobuf.json_format import MessageToDict
 from google.protobuf import message as _message
-import google.protobuf.descriptor_pool as _descriptor_pool
 
-from kwil.types import RPCEndpoint, RPCResponse
+from kwil.types import RPCEndpoint, RPCResponse, Middleware
 from kwil._utils.rpcs import GRPC
+from kwil.middleware import combine_middlewares
 
 
 class BaseProvider:
     """Handling middlewares"""
 
-    def request_func(self) -> Callable[..., RPCResponse]:
-        # apply all middlewares to the request
+    _middlewares: Tuple[Middleware, ...] = ()
+    # cache by middlewares, (all_middlewares, request_func)
+    _request_func_cache: Tuple[Tuple[Middleware, ...], Callable[..., RPCResponse]] = (None, None)
+
+    @property
+    def middlewares(self) -> Tuple[Middleware, ...]:
+        return self._middlewares
+
+    @middlewares.setter
+    def middlewares(self, middlewares: Tuple[Middleware, ...]) -> None:
+        self._middlewares = middlewares
+
+    def request_func(
+            self
+            #middlewares: List[Middleware]
+    ) -> Callable[..., RPCResponse]:
+        # all_middlewares: Tuple[Middleware] = tuple(middlewares) + tuple(self.middlewares)
+        # cache_key = self._request_func_cache[0]
+        # if cache_key is None or cache_key != all_middlewares:
+        #     self._request_func_cache = (
+        #         all_middlewares,
+        #         combine_middlewares(all_middlewares, self.make_request))
+        # return self._request_func_cache[1]
         return self.make_request
 
     def make_request(self, method: RPCEndpoint, params: Any) -> RPCResponse:

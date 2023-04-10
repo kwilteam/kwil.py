@@ -1,95 +1,133 @@
-import json
-import os
-import logging
-from unittest import TestCase
+import pytest
 
-from eth_account import Account
-from dotenv.main import load_dotenv
+from kwil.main import generate_dbi
+from kwil.types import TxPayloadType, TxParams, Nonce
 
-from kwil.main import Kwil, generate_dbi
-from kwil.provider import GRPCProvider
-from kwil.types import DBSchema, TxPayloadType, TxParams, Nonce
+interactive = True
 
 
-class TestSdk(TestCase):
-    def setUp(self):
-        logging.basicConfig(level=os.getenv("LOG_LEVEL", "DEBUG"))
-        load_dotenv()
-        host = os.getenv("NODE_HOST")
-        port = os.getenv("NODE_PORT")
-        private_key = os.getenv("PRIVATE_KEY")
-        provider = GRPCProvider(f"{host}:{port}", None)
-        account = Account.from_key(private_key)
-        self.k = Kwil(provider, account)
+@pytest.mark.integration
+class TestKwilBehavior:
+    def test_ping(self, client):
+        msg = client.kwild.ping()
+        assert msg == "pong", "expect 'pong'"
 
-    def tearDown(self) -> None:
-        pass
-
-    def test_ping(self):
-        msg = self.k.kwild.ping()
-        self.assertEqual(msg, "pong", "expect 'pong'")
-
-    def test_getConfig(self):
-        cfg = self.k.kwild.get_config()
+    def test_getConfig(self, client):
+        cfg = client.kwild.get_config()
         assert "chain_code" in cfg, "expect 'chain_code' in config"
         assert "provider_address" in cfg, "expect 'provider_address' in config"
         assert "pool_address" in cfg, "expect 'pool_address' in config"
 
-    def test_estimatePrice(self):
-        json_file_name = "test_data/table_with_action_insert.golden"
-        with open(json_file_name, "r") as f:
+    def test_estimatePrice(self, client, schema_file):
+        with open(schema_file, "r") as f:
             db_schema_str = f.read()
             tx_params = TxParams(
                 payloadType=TxPayloadType.DEPLOY_DATABASE,
-                payload=db_schema_str.encode(),
+                payload=db_schema_str.encode("utf-8"),
                 nonce=Nonce(1),
             )
-            price = self.k.kwild.estimate_price(tx_params)
+            price = client.kwild.estimate_price(tx_params)
             assert price is not None, "expect price is not None"
 
-    def test_getAccount(self):
-        account_info = self.k.kwild.get_account(self.k.wallet.address)
+    def test_getAccount(self, client):
+        account_info = client.kwild.get_account(client.wallet.address)
         assert "nonce" in account_info, "expect 'nonce' in account_info"
         assert "balance" in account_info, "expect 'balance' in account_info"
         assert "address" in account_info, "expect 'address' in account_info"
 
-    def test_deploy_database(self):
-        json_file_name = "test_data/table_with_action_insert.golden"
-        with open(json_file_name, "r") as f:
+    def _test_deployDatabase(self, client, schema_file):
+        with open(schema_file, "r") as f:
             db_schema_str = f.read()
-            tx_hash = self.k.deploy_database(db_schema_str.encode())
+            tx_receipt = client.deploy_database(db_schema_str.encode("utf-8"))
+            assert tx_receipt is not None, "expect tx_receipt is not None"
+            assert "txHash" in tx_receipt, "expect 'txHash' in tx_receipt"
+            assert "fee" in tx_receipt, "expect 'fee' in tx_receipt"
+            assert "result" in tx_receipt, "expect 'result' in tx_receipt"
 
-    def test_get_schema(self):
-        db_name = "testdb"
-        db_identifier = generate_dbi(self.k.wallet.address, db_name)
-        db_schema: DBSchema = self.k.kwild.get_schema(db_identifier)
-        assert db_schema is not None, "expect db_schema is not None"
-
-    def test_drop_database(self):
-        tx_receipt = self.k.drop_database("test_demo")
+    def _test_dropDatabase(self, client):
+        tx_receipt = client.drop_database("testdb")
         assert tx_receipt is not None, "expect tx_receipt is not None"
+        assert "txHash" in tx_receipt, "expect 'txHash' in tx_receipt"
+        assert "fee" in tx_receipt, "expect 'fee' in tx_receipt"
+        assert "result" in tx_receipt, "expect 'result' in tx_receipt"
 
-    def test_insert_action(self):
+    def _test_getSchema(self, client):
         db_name = "testdb"
-        db_identifier = generate_dbi(self.k.wallet.address, db_name)
+        db_identifier = generate_dbi(client.wallet.address, db_name)
+        db_schema = client.kwild.get_schema(db_identifier)
+        assert db_schema is not None, "expect db_schema is not None"
+        assert db_schema["owner"] == client.wallet.address, "expect db_schema['owner'] == client.wallet.address"
+        assert db_schema["name"] == db_name, "expect db_schema['name'] == db_name"
+
+    def _test_execute_insert_action(self, client):
+        db_name = "testdb"
+        db_identifier = generate_dbi(client.wallet.address, db_name)
         args = [
             {"$id": 1,
              "$username": "aha",
-             "$age": 18,},
+             "$age": 18},
         ]
-        tx_receipt = self.k.execute_action(db_identifier, "create_user", args)
+        tx_receipt = client.execute_action(db_identifier, "create_user", args)
         assert tx_receipt is not None, "expect tx_receipt is not None"
 
-    def test_query_action(self):
+    def _test_execute_query_action(self, client):
         db_name = "testdb"
-        db_identifier = generate_dbi(self.k.wallet.address, db_name)
-        tx_receipt = self.k.execute_action(db_identifier, "list_users", [])
+        db_identifier = generate_dbi(client.wallet.address, db_name)
+        tx_receipt = client.execute_action(db_identifier, "list_users", [])
         assert tx_receipt is not None, "expect tx_receipt is not None"
-        resp = tx_receipt["body"]
+        resp = tx_receipt["result"]
         assert len(resp) > 0, "expect len(resp) > 0"
         resp = resp[0][0]
-        assert resp["wallet"] == self.k.wallet.address, "expect resp['wallet'] == self.k.wallet.address"
+        assert resp["wallet"] == client.wallet.address, f"expect resp['wallet'] == {client.wallet.address}"
+        assert resp["username"] == "aha", "expect resp['name'] == 'aha'"
+        assert resp["age"] == 18, "expect resp['age'] == 18"
 
-    def test_list_database(self):
-        db_list = self.k.list_database()
-        assert len(db_list) > 0, "expect len(db_list) > 0"
+    def _test_listDatabase(self, client, count: int):
+        db_list = client.list_database()
+        assert len(db_list) == count, f"expect len(db_list) == {count}"
+
+    def _test_query(self, client, count: int):
+        query = "select * from users"
+        db_name = "testdb"
+        db_identifier = generate_dbi(client.wallet.address, db_name)
+        tx_receipt = client.kwild.query(db_identifier, query)
+        resp = tx_receipt["result"]
+        assert tx_receipt is not None, "expect tx_receipt is not None"
+        assert len(resp) == count, f"expect len(resp) == {count}"
+    def test_kwil_behavior(self, client, schema_file):
+        self._test_deployDatabase(client, schema_file)
+        self._test_getSchema(client)
+        self._test_listDatabase(client, 1)
+        self._test_execute_insert_action(client)
+        self._test_execute_query_action(client)
+        self._test_query(client, 1)
+        self._test_dropDatabase(client)
+        self._test_listDatabase(client, 0)
+
+    @pytest.mark.skipif(interactive, reason="interactive mode")
+    def test_deployDatabase(self, client, schema_file):
+        self._test_deployDatabase(client, schema_file)
+
+    @pytest.mark.skipif(interactive, reason="interactive mode")
+    def test_dropDatabase(self, client):
+        self._test_dropDatabase(client)
+
+    @pytest.mark.skipif(interactive, reason="interactive mode")
+    def test_getSchema(self, client):
+        self._test_getSchema(client)
+
+    @pytest.mark.skipif(interactive, reason="interactive mode")
+    def test_execute_insert_action(self, client):
+        self._test_execute_insert_action(client)
+
+    @pytest.mark.skipif(interactive, reason="interactive mode")
+    def test_execute_query_action(self, client):
+        self._test_execute_query_action(client)
+
+    @pytest.mark.skipif(interactive, reason="interactive mode")
+    def test_listDatabase(self, client):
+        self._test_listDatabase(client, 1)
+
+    @pytest.mark.skipif(interactive, reason="interactive mode")
+    def test_query(self, client):
+        self._test_query(client, 1)

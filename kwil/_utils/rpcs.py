@@ -10,3 +10,4 @@ class GRPC:
     kwil_getBlock = RPCEndpoint("kwil_getBlock")
     kwil_broadcast = RPCEndpoint("kwil_broadcast")
     kwil_estimatePrice = RPCEndpoint("kwil_estimatePrice")
+    kwil_query = RPCEndpoint("kwil_query")

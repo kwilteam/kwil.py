@@ -4,7 +4,6 @@ from typing import Optional, Dict, Any, List, cast
 
 from toolz import pipe
 from eth_account.signers.local import LocalAccount
-from web3 import Web3
 
 from kwil.kwild import Kwild
 from kwil.provider import BaseProvider
@@ -19,16 +18,29 @@ from kwil.types import (
     ActionExecution
 )
 from kwil._utils.transaction import Transaction, sign_tx
-from kwil._utils.action import encode_action_args
+from kwil._utils.action import encode_action_inputs
 from kwil._utils.dataset import generate_dbi
+from kwil._utils.signing import load_wallet
 
 
-class Kwil:
+class BaseKwil:
+
+    @property
+    def api(self) -> str:
+        from kwil import __version__
+        return __version__
+
+    @classmethod
+    def generate_dbi(cls, owner: str, db_name: str) -> DBIdentifier:
+        return generate_dbi(owner, db_name)
+
+
+class Kwil(BaseKwil):
 
     RequestManager = DefaultRequestManager
 
     kwild: Kwild
-    web3: Web3
+    web3: None
 
     def __init__(
             self,
@@ -38,7 +50,11 @@ class Kwil:
         self.manager = self.RequestManager(self, provider)
 
         self.kwild = Kwild(self)
-        self._wallet = wallet
+
+        if wallet is None:
+            self._wallet = load_wallet(os.getenv("KWIL_ETH_PRIVATE_KEY"))
+        else:
+            self._wallet = wallet
 
     @property
     def kwil_provider(self) -> BaseProvider:
@@ -55,11 +71,6 @@ class Kwil:
     @wallet.setter
     def wallet(self, wallet: LocalAccount) -> None:
         self._wallet = wallet
-
-    @property
-    def api(self) -> str:
-        from kwil import __version__
-        return __version__
 
     def _create_tx(self, payload_type: TxPayloadType, payload: bytes) -> TxParams:
         account_info = self.kwild.get_account(self.wallet.address)
@@ -82,17 +93,6 @@ class Kwil:
     def deploy_database(self, payload: bytes) -> TxReceipt:
         payload_type = TxPayloadType.DEPLOY_DATABASE
         tx_params = self._create_tx(payload_type, payload)
-
-        # print("hash", [b for b in tx_params["hash"]])
-        # print("payloadType", tx_params["payloadType"])
-        # print("payload", [b for b in tx_params["payload"]])
-        # print("fee", tx_params["fee"])
-        # print("nonce", tx_params["nonce"])
-        # # print("signature", tx_params["signature"])
-        # print("singature_bytes", [b for b in tx_params["signature"]["signature_bytes"]])
-        # print("singature_type", tx_params["signature"]["signature_type"])
-        # print("sender", tx_params["sender"])
-
         return self.kwild.broadcast(tx_params)
 
     def get_database(self, db_id: str) -> Dict[str, Any]:
@@ -110,7 +110,7 @@ class Kwil:
         return self.kwild.broadcast(tx_params)
 
     def execute_action(self, db_id: str, action: str, inputs: List[Dict[str, Any]]) -> TxReceipt:
-        encoded_inputs = encode_action_args(inputs)
+        encoded_inputs = encode_action_inputs(inputs)
         exec_body = ActionExecution(action=action,
                                     dbID=DBIdentifier(db_id),
                                     params=encoded_inputs)

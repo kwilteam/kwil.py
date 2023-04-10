@@ -1,5 +1,3 @@
-import logging
-
 import grpc
 
 from kwil.types import (
@@ -19,35 +17,32 @@ from kwil.tx.v1 import (
     tx_pb2,
     list_pb2,
 )
-from kwil._utils.validation import validate_address, validate_tx_params
 
-_LOGGER = logging.getLogger(__name__)
+# timeout in seconds
+READY_TIMEOUT = 3
+REQUEST_TIMEOUT = 2
 
 
 class Client:
-    def __init__(self, endpoint: str):
+    def __init__(self, endpoint: str, ready_timeout: int = READY_TIMEOUT, request_timeout:int = REQUEST_TIMEOUT):
+        self.ready_timeout = ready_timeout
+        self.request_timeout = request_timeout
         self.channel = grpc.insecure_channel(endpoint)
-        self.tx = service_pb2_grpc.TxServiceStub(self.channel)
+        grpc.channel_ready_future(self.channel).result(timeout=self.ready_timeout)
+        self.tx_stub = service_pb2_grpc.TxServiceStub(self.channel)
 
     def close(self):
         self.channel.close()
 
     def ping(self) -> ping_pb2.PingResponse:
         req = ping_pb2.PingRequest(message="ping")
-        resp = self.tx.Ping(req)
-        return resp
+        return self.tx_stub.Ping(req, timeout=self.request_timeout)
 
     def query(self, db_id: DBIdentifier, query: str) -> query_pb2.QueryResponse:
-        assert isinstance(query, str), "query must be provided as a string"
-        assert isinstance(db_id, str), "db_id must be provided as a string"
-
         req = query_pb2.QueryRequest(dbid=db_id, query=query)
-        resp = self.tx.Query(req)
-        return resp
+        return self.tx_stub.Query(req, timeout=self.request_timeout)
 
     def broadcast(self, tx: TxParams) -> broadcast_pb2.BroadcastResponse:
-        validate_tx_params(tx)
-
         gtx = tx_pb2.Tx(
             hash=tx.get("hash"),
             nonce=tx.get("nonce"),
@@ -59,12 +54,9 @@ class Client:
         )
 
         req = broadcast_pb2.BroadcastRequest(tx=gtx)
-        resp = self.tx.Broadcast(req)
-        return resp
+        return self.tx_stub.Broadcast(req, timeout=self.request_timeout)
 
     def estimate_price(self, tx: TxParams) -> price_pb2.EstimatePriceResponse:
-        validate_tx_params(tx)
-
         gtx = tx_pb2.Tx(
             nonce=tx.get("nonce"),
             fee=tx.get("fee"),
@@ -73,31 +65,20 @@ class Client:
         )
 
         req = price_pb2.EstimatePriceRequest(tx=gtx)
-        resp = self.tx.EstimatePrice(req)
-        return resp
+        return self.tx_stub.EstimatePrice(req, timeout=self.request_timeout)
 
     def get_config(self) -> config_pb2.GetConfigResponse:
         req = config_pb2.GetConfigRequest()
-        resp = self.tx.GetConfig(req)
-        return resp
+        return self.tx_stub.GetConfig(req, timeout=self.request_timeout)
 
     def get_account(self, address: HexAddress) -> account_pb2.GetAccountResponse:
-        validate_address(address)
-
         req = account_pb2.GetAccountRequest(address=address)
-        resp = self.tx.GetAccount(req)
-        return resp
+        return self.tx_stub.GetAccount(req, timeout=self.request_timeout)
 
     def get_schema(self, db_id: DBIdentifier) -> dataset_pb2.GetSchemaResponse:
-        assert isinstance(db_id, str), "db_id must be provided as a string"
-
         req = dataset_pb2.GetSchemaRequest(dbid=db_id)
-        resp = self.tx.GetSchema(req)
-        return resp
+        return self.tx_stub.GetSchema(req, timeout=self.request_timeout)
 
     def list_database(self, owner: HexAddress) -> list_pb2.ListDatabasesResponse:
-        validate_address(owner)
-
         req = list_pb2.ListDatabasesRequest(owner=owner)
-        resp = self.tx.ListDatabases(req)
-        return resp
+        return self.tx_stub.ListDatabases(req, timeout=self.request_timeout)

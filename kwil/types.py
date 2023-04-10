@@ -5,19 +5,27 @@ from typing import (
     NewType,
     TypeVar,
     TypedDict,
+    Callable,
 )
 from enum import IntEnum
 
 from kwil.kwil_typing import (
     DBIdentifier,
     HexAddress,
-    HexStr,
 )
 
+
+class RPCResponse(TypedDict, total=False):
+    error: Any
+    result: Any
+
+
+URI = NewType("URI", str)
 RPCEndpoint = NewType("RPCEndpoint", str)
 Nonce = NewType("Nonce", int)
 TReturn = TypeVar("TReturn")
 TParams = TypeVar("TParams")
+Middleware = Callable[[RPCEndpoint, Any], RPCResponse]
 
 
 class DatasetIdentifier(TypedDict, total=True):
@@ -99,26 +107,11 @@ class TxParams(TypedDict, total=False):
     sender: str
 
 
-class TxData(TypedDict, total=False):
-    hash: bytes
-    payloadType: TxPayloadType
-    payload: bytes
-    fee: str
-    nonce: Nonce
-    signature: bytes
-    sender: str
-
-
 class TxReceipt(TypedDict, total=False):
     hash: bytes
-    payloadType: TxPayloadType
-    payload: bytes
     fee: str
-    nonce: Nonce
-    signature: bytes
-    sender: str
-    status: bool
     body: Dict[str, Any]
+    result: Dict[str, Any]
 
 
 class AccountInfo(TypedDict, total=False):
@@ -168,11 +161,6 @@ class ServiceConfig(TypedDict, total=False):
     chainCode: int
     providerAddress: HexAddress
     poolAddress: HexAddress
-
-
-class RPCResponse(TypedDict, total=False):
-    error: Any
-    result: Any
 
 
 class ActionExecution(TypedDict, total=False):

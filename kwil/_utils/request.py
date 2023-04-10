@@ -1,10 +1,12 @@
+import os
 from collections import OrderedDict
 import threading
 import logging
-from typing import Any, Callable, Dict, List
+from typing import Any, Dict, List
 
-from kwil._utils.name_converter import camel_to_snake, rpc_to_grpc_method_name
+from kwil._utils.naming_converter import camel_to_snake, rpc_to_grpc_method_name
 from kwil._utils.grpc import Client as GRPCClient
+from kwil.types import URI
 
 DEFAULT_CACHE_SIZE = 20
 DEFAULT_TIMEOUT = 10
@@ -88,3 +90,7 @@ def grpc_request(endpoint_uri, method, args):
     # catch exceptions here
     resp = grpc_method(*args)
     return resp
+
+
+def get_default_grpc_endpoint() -> URI:
+    return URI(os.environ.get("KWIL_GRPC_PROVIDER_URI", "localhost:50051"))

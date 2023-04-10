@@ -1,5 +1,5 @@
 import logging
-from typing import TypeVar, Callable, Any, Optional, Generic, Type, Dict, Tuple
+from typing import TypeVar, Callable, Any, Optional, Generic, Type
 
 from toolz import pipe
 
@@ -13,10 +13,10 @@ logger = logging.getLogger(__name__)
 
 
 def _apply_request_validator(
-        method: RPCEndpoint, params: Any, validators: Dict[RPCEndpoint, Callable[..., TReturn]]
+        method: RPCEndpoint, params: Any, validators: Callable[..., TReturn]
 ) -> None:
     if validators:
-        logger.debug("apply request validator '%s' to '%s'", validators.__name__, method)
+        logger.debug("apply request validator to '%s'", method)
         pipe(params, validators)
 
 

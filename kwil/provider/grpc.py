@@ -1,21 +1,27 @@
 import logging
-from typing import Any, Dict, Callable
+from typing import Any, Optional, Union
 
 import grpc
 
-from kwil.types import RPCEndpoint, RPCResponse
+from kwil.types import RPCEndpoint, RPCResponse, URI
 from kwil.provider.base import ProtoBaseProvider
-from kwil._utils.request import grpc_request
+from kwil._utils.request import grpc_request, get_default_grpc_endpoint
 
 
 class GRPCProvider(ProtoBaseProvider):
     logger = logging.getLogger("kwil.provider.GRPCProvider")
 
     endpoint_uri = None
-    _request_kwargs = None
 
-    def __init__(self, endpoint_uri, request_kwargs):
-        self.endpoint_uri = endpoint_uri
+    def __init__(self,
+                 endpoint_uri: Optional[Union[URI, str]] = None
+                 ) -> None:
+        if endpoint_uri is None:
+            self.endpoint_uri = get_default_grpc_endpoint()
+        else:
+            self.endpoint_uri = URI(endpoint_uri)
+
+        super().__init__()
 
     def __str__(self) -> str:
         return "GRPC connection {0}".format(self.endpoint_uri)
