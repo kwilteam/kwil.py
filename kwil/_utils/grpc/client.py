@@ -1,10 +1,6 @@
 import grpc
 
-from kwil.types import (
-    TxParams,
-    DBIdentifier,
-    HexAddress
-)
+from kwil.types import TxParams, DBIdentifier, HexAddress
 from kwil.tx.v1 import (
     service_pb2_grpc,
     ping_pb2,
@@ -24,7 +20,12 @@ REQUEST_TIMEOUT = 2
 
 
 class Client:
-    def __init__(self, endpoint: str, ready_timeout: int = READY_TIMEOUT, request_timeout:int = REQUEST_TIMEOUT):
+    def __init__(
+        self,
+        endpoint: str,
+        ready_timeout: int = READY_TIMEOUT,
+        request_timeout: int = REQUEST_TIMEOUT,
+    ):
         self.ready_timeout = ready_timeout
         self.request_timeout = request_timeout
         self.channel = grpc.insecure_channel(endpoint)

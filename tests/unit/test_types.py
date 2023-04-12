@@ -7,4 +7,4 @@ class TestPayloadType(TestCase):
         self.assertEqual(str(TxPayloadType.DEPLOY_DATABASE), "DEPLOY_DATABASE")
 
     def testFormat(self):
-        self.assertEqual(f'{TxPayloadType.DEPLOY_DATABASE}', "DEPLOY_DATABASE")
+        self.assertEqual(f"{TxPayloadType.DEPLOY_DATABASE}", "DEPLOY_DATABASE")

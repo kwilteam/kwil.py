@@ -42,7 +42,7 @@ class TxPayloadType(IntEnum):
     END_PAYLOAD_TYPE = 105
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class SignatureType(IntEnum):
@@ -52,7 +52,7 @@ class SignatureType(IntEnum):
     END_SIGNATURE_TYPE = 3
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class ColumnType(IntEnum):
@@ -63,7 +63,7 @@ class ColumnType(IntEnum):
     END_COLUMN_TYPE = 104
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class AttributeType(IntEnum):
@@ -79,7 +79,7 @@ class AttributeType(IntEnum):
     END_ATTRIBUTE_TYPE = 4
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class IndexType(IntEnum):
@@ -89,7 +89,7 @@ class IndexType(IntEnum):
     END_INDEX_TYPE = 103
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class Signature(TypedDict, total=True):
@@ -177,7 +177,7 @@ class ActionParamDataType(IntEnum):
     END_DATA_TYPE = 104
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class ActionParamValue(TypedDict, total=False):

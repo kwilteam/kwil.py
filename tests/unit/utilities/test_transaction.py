@@ -9,7 +9,7 @@ def test_generate_tx_hash():
         "0",
         Nonce(1),
     )
-    assert tx_hash.hex() == \
-           "4e8855a27265fbcc98b98cd9519799893ad937312bfbda70a5852474dd6c96aea0bb973936c3d601a2cc5b935709bd6d"
-
-
+    assert (
+        tx_hash.hex()
+        == "4e8855a27265fbcc98b98cd9519799893ad937312bfbda70a5852474dd6c96aea0bb973936c3d601a2cc5b935709bd6d"
+    )

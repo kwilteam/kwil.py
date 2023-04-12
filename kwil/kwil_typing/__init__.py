@@ -1,4 +1,4 @@
-from .kvm import (
+from .kvm import (  # noqa: F401
     DBIdentifier,
     HexAddress,
     HexStr,

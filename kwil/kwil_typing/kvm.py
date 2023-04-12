@@ -1,6 +1,6 @@
 from typing import NewType
 
-DBIdentifier = NewType('DBIdentifier', str)
+DBIdentifier = NewType("DBIdentifier", str)
 
-HexStr = NewType('HexStr', str)
-HexAddress = NewType('HexAddress', HexStr)
+HexStr = NewType("HexStr", str)
+HexAddress = NewType("HexAddress", HexStr)

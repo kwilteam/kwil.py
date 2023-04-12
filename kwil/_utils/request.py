@@ -68,9 +68,7 @@ def _get_conn(endpoint_uri: str) -> Any:
 
         # close evicted connections after timeout in separate thread
         threading.Timer(
-            DEFAULT_TIMEOUT + 0.1,
-            _close_evicted_conns,
-            args=[evicted_conns]
+            DEFAULT_TIMEOUT + 0.1, _close_evicted_conns, args=[evicted_conns]
         )
 
     return _conn_cache.get_cache_entry(cache_key)

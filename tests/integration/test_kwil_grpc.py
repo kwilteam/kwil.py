@@ -56,29 +56,29 @@ class TestKwilBehavior:
         db_identifier = generate_dbi(client.wallet.address, db_name)
         db_schema = client.kwild.get_schema(db_identifier)
         assert db_schema is not None, "expect db_schema is not None"
-        assert db_schema["owner"] == client.wallet.address, "expect db_schema['owner'] == client.wallet.address"
+        assert (
+            db_schema["owner"].lower() == client.wallet.address.lower()
+        ), "expect db_schema['owner'] == client.wallet.address"
         assert db_schema["name"] == db_name, "expect db_schema['name'] == db_name"
 
     def _test_execute_insert_action(self, client):
         db_name = "testdb"
-        db_identifier = generate_dbi(client.wallet.address, db_name)
         args = [
-            {"$id": 1,
-             "$username": "aha",
-             "$age": 18},
+            {"$id": 1, "$username": "aha", "$age": 18},
         ]
-        tx_receipt = client.execute_action(db_identifier, "create_user", args)
+        tx_receipt = client.execute_action(db_name, "create_user", args)
         assert tx_receipt is not None, "expect tx_receipt is not None"
 
     def _test_execute_query_action(self, client):
         db_name = "testdb"
-        db_identifier = generate_dbi(client.wallet.address, db_name)
-        tx_receipt = client.execute_action(db_identifier, "list_users", [])
+        tx_receipt = client.execute_action(db_name, "list_users", [])
         assert tx_receipt is not None, "expect tx_receipt is not None"
         resp = tx_receipt["result"]
         assert len(resp) > 0, "expect len(resp) > 0"
-        resp = resp[0][0]
-        assert resp["wallet"] == client.wallet.address, f"expect resp['wallet'] == {client.wallet.address}"
+        resp = resp[0]
+        assert (
+            resp["wallet"].lower() == client.wallet.address.lower()
+        ), f"expect resp['wallet'] == {client.wallet.address}"
         assert resp["username"] == "aha", "expect resp['name'] == 'aha'"
         assert resp["age"] == 18, "expect resp['age'] == 18"
 
@@ -89,11 +89,11 @@ class TestKwilBehavior:
     def _test_query(self, client, count: int):
         query = "select * from users"
         db_name = "testdb"
-        db_identifier = generate_dbi(client.wallet.address, db_name)
-        tx_receipt = client.kwild.query(db_identifier, query)
+        tx_receipt = client.query(db_name, query)
         resp = tx_receipt["result"]
         assert tx_receipt is not None, "expect tx_receipt is not None"
         assert len(resp) == count, f"expect len(resp) == {count}"
+
     def test_kwil_behavior(self, client, schema_file):
         self._test_deployDatabase(client, schema_file)
         self._test_getSchema(client)
@@ -104,30 +104,30 @@ class TestKwilBehavior:
         self._test_dropDatabase(client)
         self._test_listDatabase(client, 0)
 
-    @pytest.mark.skipif(interactive, reason="interactive mode")
+    @pytest.mark.skipif(interactive, reason="only interactive mode")
     def test_deployDatabase(self, client, schema_file):
         self._test_deployDatabase(client, schema_file)
 
-    @pytest.mark.skipif(interactive, reason="interactive mode")
+    @pytest.mark.skipif(interactive, reason="only interactive mode")
     def test_dropDatabase(self, client):
         self._test_dropDatabase(client)
 
-    @pytest.mark.skipif(interactive, reason="interactive mode")
+    @pytest.mark.skipif(interactive, reason="only interactive mode")
     def test_getSchema(self, client):
         self._test_getSchema(client)
 
-    @pytest.mark.skipif(interactive, reason="interactive mode")
+    @pytest.mark.skipif(interactive, reason="only interactive mode")
     def test_execute_insert_action(self, client):
         self._test_execute_insert_action(client)
 
-    @pytest.mark.skipif(interactive, reason="interactive mode")
+    @pytest.mark.skipif(interactive, reason="only interactive mode")
     def test_execute_query_action(self, client):
         self._test_execute_query_action(client)
 
-    @pytest.mark.skipif(interactive, reason="interactive mode")
+    @pytest.mark.skipif(interactive, reason="only interactive mode")
     def test_listDatabase(self, client):
         self._test_listDatabase(client, 1)
 
-    @pytest.mark.skipif(interactive, reason="interactive mode")
+    @pytest.mark.skipif(interactive, reason="only interactive mode")
     def test_query(self, client):
         self._test_query(client, 1)

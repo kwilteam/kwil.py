@@ -1,7 +1,7 @@
 import logging
-from typing import List, Tuple, Any, Optional
+from typing import Any, Optional
 
-from kwil.types import RPCResponse, Middleware
+from kwil.types import RPCResponse
 from kwil.provider import BaseProvider, AutoProvider
 from kwil.exceptions import BadResponseFormat
 
@@ -12,10 +12,10 @@ class RequestManager:
     _provider = None
 
     def __init__(
-            self,
-            kwil: "Kwil",
-            provider: Optional[BaseProvider] = None,
-            # middlewares: Optional[List[Tuple[str, Middleware]]] = None,
+        self,
+        kwil: "Kwil",
+        provider: Optional[BaseProvider] = None,
+        # middlewares: Optional[List[Tuple[str, Middleware]]] = None,
     ):
         self.kwil = kwil
 

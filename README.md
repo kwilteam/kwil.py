@@ -1,27 +1,11 @@
 # kwil.py
 
-[![PyPI - Version](https://img.shields.io/pypi/v/kwil-sdk.svg)](https://pypi.org/project/kwil-sdk)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/kwil-sdk.svg)](https://pypi.org/project/kwil-sdk)
+[![PyPI - Version](https://img.shields.io/pypi/v/kwil.svg)](https://pypi.org/project/kwil)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/kwil.svg)](https://pypi.org/project/kwil)
 
-Heavily borrowed from [web3.py]()
+Borrows heavily from [web3.py](https://github.com/ethereum/web3.py)
 
 -----
-
-**Table of Contents**
-
-- [Installation](#installation)
-- [License](#license)
-
-## Installation
-
-```console
-pip install kwil-sdk
-```
-
-
-## Usage
-
-`KWIL_GRPC_PROVIDER_URI`
 
 
 ## License

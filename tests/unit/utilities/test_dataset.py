@@ -1,5 +1,3 @@
-import pytest
-
 from kwil._utils.dataset import generate_dbi
 
 

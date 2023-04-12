@@ -1,33 +1,58 @@
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptool.build_meta"
+requires = ["setuptools>=67.0.0"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "kwil"
-description = ''
+description = 'Library for interacting with the kwil blockchain'
+version = "0.0.1"
 readme = "README.md"
-requires-python = ">=3.7"
-license = "MIT"
+requires-python = ">=3.9"
+license = {text = "MIT License"}
 keywords = []
 authors = [
   { name = "yaiba", email = "4yaiba@gmail.com" },
 ]
 classifiers = [
+  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: Implementation :: CPython",
-
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
 ]
 dependencies = [
-  "",]
-dynamic = ["version"]
+  "grpcio>=1.53.0",
+  "protobuf>=4.22.1",
+  "eth-account>=0.8.0",
+  "eth-utils>=2.1.0",
+  ]
+
+[project.optional-dependencies]
+# feature-name = ["package>=1.0.0"]
+dev = [
+  # test
+  "pytest>=7.2.2",
+  "pytest-watch>=4.2.0",
+  "python-dotenv>=1.0.0",
+  # lint
+  "black>=23.3.0",
+  "flake8>=4.0.1",
+  # build
+  "twine>=4.0.2",
+  "setuptools>=67.6.1",
+  "build>=0.10.0",
+  "tox>=4.4.11",
+]
+linter = [
+  "black>=23.3.0",
+  "flake8>=4.0.1",
+  "types-setuptools>=67.6.0.0",
+  "types-protobuf>=4.22.0.0",
+]
 
 [project.urls]
-Documentation = "https://github.com/unknown/kwil-sdk#readme"
-Issues = "https://github.com/unknown/kwil-sdk/issues"
-Source = "https://github.com/unknown/kwil-sdk"
-
-[project.scripts]
-cli-name = ""
+Homepage = "https://github.com/kwilteam/kwil.py"
 
 [tool.coverage.run]
 branch = true
@@ -43,7 +68,5 @@ exclude_lines = [
   "if TYPE_CHECKING:",
 ]
 
-[tool.pytest.ini_options]
-markers = [
-    "integration: marks tests as integration test (deselect with '-m \"not integration\"')",
-]
+[tool.setuptools.packages.find]
+where = ["kwil"]

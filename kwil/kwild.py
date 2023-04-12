@@ -17,6 +17,7 @@ from kwil.types import (
 
 class BaseKwild(Module):
     """Kwil Chain base class"""
+
     logger = logging.getLogger("kwil.BaseKwild")
 
     def __init__(self, kwil):
@@ -35,8 +36,12 @@ class Kwild(BaseKwild):
     """Kwil Chain class"""
 
     get_schema: Method[Callable[[DBIdentifier], DBSchema]] = Method(GRPC.kwil_getSchema)
-    list_database: Method[Callable[[HexAddress], List[DBSchema]]] = Method(GRPC.kwil_listDatabase)
-    get_account: Method[Callable[[HexAddress], AccountInfo]] = Method(GRPC.kwil_getAccount)
+    list_database: Method[Callable[[HexAddress], List[DBSchema]]] = Method(
+        GRPC.kwil_listDatabase
+    )
+    get_account: Method[Callable[[HexAddress], AccountInfo]] = Method(
+        GRPC.kwil_getAccount
+    )
     broadcast: Method[Callable[[TxParams], TxReceipt]] = Method(GRPC.kwil_broadcast)
     estimate_price: Method[Callable[[TxParams], str]] = Method(GRPC.kwil_estimatePrice)
     query: Method[Callable[[DBIdentifier, str], TxReceipt]] = Method(GRPC.kwil_query)

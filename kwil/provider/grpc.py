@@ -13,9 +13,7 @@ class GRPCProvider(ProtoBaseProvider):
 
     endpoint_uri = None
 
-    def __init__(self,
-                 endpoint_uri: Optional[Union[URI, str]] = None
-                 ) -> None:
+    def __init__(self, endpoint_uri: Optional[Union[URI, str]] = None) -> None:
         if endpoint_uri is None:
             self.endpoint_uri = get_default_grpc_endpoint()
         else:
@@ -28,17 +26,26 @@ class GRPCProvider(ProtoBaseProvider):
 
     def make_request(self, method: RPCEndpoint, params: Any) -> RPCResponse:
         # make request here
-        self.logger.debug("Making GRPC request. URI: %s, Method: %s",
-                          self.endpoint_uri, method)
+        self.logger.debug(
+            "Making GRPC request. URI: %s, Method: %s", self.endpoint_uri, method
+        )
 
         try:
             raw_response = grpc_request(self.endpoint_uri, method, params)
         except grpc.RpcError as e:
-            self.logger.debug("Call GRPC error. URI: %s, Method: %s, Error: %s",
-                              self.endpoint_uri, method, e)
+            self.logger.debug(
+                "Call GRPC error. URI: %s, Method: %s, Error: %s",
+                self.endpoint_uri,
+                method,
+                e,
+            )
             return RPCResponse(error=e)
         else:
             response = self.decode_rpc_request(raw_response)
-            self.logger.debug("Got GRPC response. URI: %s, Method: %s, Response: %s",
-                              self.endpoint_uri, method, response)
+            self.logger.debug(
+                "Got GRPC response. URI: %s, Method: %s, Response: %s",
+                self.endpoint_uri,
+                method,
+                response,
+            )
             return RPCResponse(result=response)

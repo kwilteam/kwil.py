@@ -10,7 +10,7 @@ from kwil._utils.naming_converter import camel_to_snake
         ("FirstName", "first_name"),
         ("alllowercase", "alllowercase"),
         ("camelCaseWithNumber1", "camel_case_with_number1"),
-    ]
+    ],
 )
 def test_camel_to_snake(name, expected):
     assert camel_to_snake(name) == expected

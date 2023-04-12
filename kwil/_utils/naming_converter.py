@@ -1,5 +1,3 @@
-
-
 def camel_to_snake(name: str) -> str:
     """Converts a camelCase string to snake_case.
 

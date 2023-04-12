@@ -1,5 +1,3 @@
-import pytest
-
 from kwil._utils.action import encode_action_inputs
 
 

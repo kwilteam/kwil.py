@@ -1,12 +1,11 @@
 import logging
-from typing import Callable, Tuple, Any, Dict, Tuple, List
+from typing import Callable, Any, Dict, Tuple
 
 from google.protobuf.json_format import MessageToDict
 from google.protobuf import message as _message
 
 from kwil.types import RPCEndpoint, RPCResponse, Middleware
 from kwil._utils.rpcs import GRPC
-from kwil.middleware import combine_middlewares
 
 
 class BaseProvider:
@@ -14,7 +13,10 @@ class BaseProvider:
 
     _middlewares: Tuple[Middleware, ...] = ()
     # cache by middlewares, (all_middlewares, request_func)
-    _request_func_cache: Tuple[Tuple[Middleware, ...], Callable[..., RPCResponse]] = (None, None)
+    _request_func_cache: Tuple[Tuple[Middleware, ...], Callable[..., RPCResponse]] = (
+        None,
+        None,
+    )
 
     @property
     def middlewares(self) -> Tuple[Middleware, ...]:
@@ -25,10 +27,11 @@ class BaseProvider:
         self._middlewares = middlewares
 
     def request_func(
-            self
-            #middlewares: List[Middleware]
+        self,
+        # middlewares: List[Middleware]
     ) -> Callable[..., RPCResponse]:
-        # all_middlewares: Tuple[Middleware] = tuple(middlewares) + tuple(self.middlewares)
+        # all_middlewares: Tuple[Middleware] = tuple(middlewares) +
+        #   tuple(self.middlewares)
         # cache_key = self._request_func_cache[0]
         # if cache_key is None or cache_key != all_middlewares:
         #     self._request_func_cache = (
@@ -50,22 +53,16 @@ class ProtoBaseProvider(BaseProvider):
     def __str__(self) -> None:
         pass
 
-    # @staticmethod
-    # def apply_validators(method, params) -> None:
-    #     # apply validators here
-    #     if method not in request_validators:
-    #         raise KeyError("Method {0} not found in request validators".format(method))
-    #     request_validators[method](params)
-
     def encode_rpc_request(self, method, params) -> bytes:
         # encode here
         pass
 
     def decode_rpc_request(self, raw_response: _message) -> Dict[Any, Any]:
-        return MessageToDict(raw_response,
-                             # descriptor_pool=_descriptor_pool.Default(),
-                             including_default_value_fields=True,
-                             )
+        return MessageToDict(
+            raw_response,
+            # descriptor_pool=_descriptor_pool.Default(),
+            including_default_value_fields=True,
+        )
 
     def is_connected(self) -> bool:
         try:
@@ -74,5 +71,5 @@ class ProtoBaseProvider(BaseProvider):
             logging.exception("caught error", ex)
             return False
 
-        assert 'error' not in response
+        assert "error" not in response
         return True

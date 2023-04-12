@@ -22,11 +22,15 @@ def _apply_result_formatters(
 
 
 class Module:
-
     @curry
-    def caller_fn(self, kwil: "Kwil", method: Method[Callable[..., Any]]) -> Callable[..., Any]:
+    def caller_fn(
+        self, kwil: "Kwil", method: Method[Callable[..., Any]]
+    ) -> Callable[..., Any]:
         def caller(*args: Any) -> Any:
             (method_str, args), response_formatters = method.process_params(self, *args)
             result = kwil.manager.request_blocking(method_str, args)
-            return _apply_result_formatters(method.rpc_method, response_formatters, result)
+            return _apply_result_formatters(
+                method.rpc_method, response_formatters, result
+            )
+
         return caller
