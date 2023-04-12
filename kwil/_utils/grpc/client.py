@@ -2,7 +2,6 @@ import grpc
 
 from kwil.types import TxParams, DBIdentifier, HexAddress
 from kwil.tx.v1 import (
-    service_pb2_grpc,
     ping_pb2,
     query_pb2,
     broadcast_pb2,
@@ -12,6 +11,7 @@ from kwil.tx.v1 import (
     dataset_pb2,
     tx_pb2,
     list_pb2,
+    service_pb2_grpc
 )
 
 # timeout in seconds

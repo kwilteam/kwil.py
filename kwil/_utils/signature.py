@@ -6,7 +6,7 @@ from hexbytes import (
     HexBytes,
 )
 
-from kwil.kwil_typing import HexStr
+from kwil_typing import HexStr
 from kwil.types import Signature, SignatureType
 
 

@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "kwil"
 description = 'Library for interacting with the kwil blockchain'
-version = "0.0.1"
+version = "0.0.2"
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT License"}
-keywords = []
+keywords = ["kwil"]
 authors = [
   { name = "yaiba", email = "4yaiba@gmail.com" },
 ]
@@ -69,4 +69,9 @@ exclude_lines = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["kwil"]
+where = ["."]
+exclude = ["tests*"]
+include = ["kwil_proto*", "kwil_typing*", "kwil_utils*", "kwil*"]
+
+#[tool.setuptools]
+#packages = ["kwil", "kwil_proto", "kwil_typing", "kwil_utils"]

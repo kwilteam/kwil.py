@@ -9,7 +9,7 @@ from typing import (
 )
 from enum import IntEnum
 
-from kwil.kwil_typing import (
+from kwil_typing import (
     DBIdentifier,
     HexAddress,
 )
