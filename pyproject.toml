@@ -72,6 +72,3 @@ exclude_lines = [
 where = ["."]
 exclude = ["tests*"]
 include = ["kwil_proto*", "kwil_typing*", "kwil_utils*", "kwil*"]
-
-#[tool.setuptools]
-#packages = ["kwil", "kwil_proto", "kwil_typing", "kwil_utils"]
