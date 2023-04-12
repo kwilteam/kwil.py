@@ -35,7 +35,7 @@ Finally, we can call `list_database` to list all the databases under current acc
 
 ## Working with Dataset
 
-```
+```python
 # execute an action
 db_name = "testdb"
 action = "create_user"
@@ -65,7 +65,7 @@ action create_user($id, $username, $age) public {
 `create_user` is a public action, so we can call it without any permission.
 
 To call this action, we need to provide the dataset name, action name and inputs.
-```
+```python
 tx_receipt = client.execute_action(db_name,
                                    action,
                                    [{"$id": 1, "$username": "aha", "$age": 18}])

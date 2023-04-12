@@ -13,9 +13,12 @@ To use Kwil, you need to do the following:
 
 ## Installation
 
-Support python 3.9,3.10.
-
 `$ pip install kwil`
+
+Supported python version:
+* 3.9
+* 3.10
+
 
 ## Usage
 
