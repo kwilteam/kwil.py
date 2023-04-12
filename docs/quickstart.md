@@ -34,6 +34,6 @@ True
 
 ### More
 
-Check [overview](./overview.md) learn more on API.
+Check [overview](./overview.md) learn more on APIs.
 
 Check [examples](./examples.md) for a walkthrough.

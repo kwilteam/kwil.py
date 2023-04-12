@@ -7,6 +7,7 @@ Borrows heavily from [web3.py](https://github.com/ethereum/web3.py)
 
 -----
 
+Check (quickstart)[./docs/quickstart.md] to get started.
 
 
 ## License

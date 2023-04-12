@@ -1,12 +1,15 @@
 ## Deploy Database Schema
 
+You'll first need to configure private key `export KWIL_ETH_PRIVATE_KEY=YOUR_KEY`.
+
+
 ```python
 import logging
 
 from kwil import Kwil
 # assume that account has enough fund
 # here we use test_db.kf as our dataset schema, we'll use examples/test_db.json(compiled schema)
-# change `owner` in test_db.json to `YOUR_PRIVATE_KEY`
+# change `owner` in test_db.json to the address corresponed with `YOUR_PRIVATE_KEY`
 
 # create client
 client = Kwil(Kwil.GRPCProvider("localhost:50051"))

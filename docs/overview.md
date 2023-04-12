@@ -8,6 +8,14 @@ Providers are used to interact with the blockchain. They are responsible for sen
 There are following builtin providers:
 * GRPCProvider - connects to a remote gRPC based server
 
+### Private Key
+
+Kwil now support Ethereum private key to sign transaction. This key is also associated
+with an Ethereum account which needed to be funded to use Kwil.
+
+Set `KWIL_ETH_PRIVATE_KEY` environment variable to your private key.
+
+
 ## Base API
 
 There is a [example](https://github.com/kwilteam/kwil.py/blob/main/examples/lifecycle.py) that shows how to use these API.
