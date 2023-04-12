@@ -13,13 +13,15 @@ To use Kwil, you need to do the following:
 
 ## Installation
 
+Support python 3.9,3.10.
+
 `$ pip install kwil`
 
 ## Usage
 
+### Provider
 This library depends on a connection to an Kwil node. We call these connections Providers.
 
-### Provider
 
 ```
 # NOTE: set env variable KWIL_ETH_PRIVATE_KEY to your eth private key
@@ -28,3 +30,10 @@ This library depends on a connection to an Kwil node. We call these connections 
 >>> kwil.is_connected()
 True
 ```
+
+
+### More
+
+Check [overview](./overview.md) learn more on API.
+
+Check [examples](./examples.md) for a walkthrough.
