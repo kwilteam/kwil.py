@@ -21,6 +21,8 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
 
+clean: clean-build clean-pyc
+
 test: ## run tests quickly with the default Python
 	pytest tests
 
@@ -30,3 +32,6 @@ test-all: ## run tests on every Python version
 lint: ## check style with flake8
 	tox -e lint
 
+dist: clean ## package
+	python -m build
+	ls -l dist
