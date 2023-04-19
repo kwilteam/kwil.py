@@ -13,8 +13,6 @@ There are following builtin providers:
 Kwil now support Ethereum private key to sign transaction. This key is also associated
 with an Ethereum account which needed to be funded to use Kwil.
 
-Set `KWIL_ETH_PRIVATE_KEY` environment variable to your private key.
-
 
 ## Base API
 
