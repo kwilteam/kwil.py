@@ -2,7 +2,6 @@ import os
 import logging
 
 import pytest
-from eth_account import Account
 from dotenv.main import load_dotenv
 
 from kwil.main import Kwil
@@ -17,11 +16,12 @@ def env():
 @pytest.fixture(scope="module")
 def wallet():
     private_key = os.getenv("PRIVATE_KEY")
-    return Account.from_key(private_key)
+    return Kwil.load_wallet(private_key)
 
 
 @pytest.fixture(scope="module")
 def client(wallet):
+    # TODO: spin test services
     logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
     load_dotenv()
     host = os.getenv("NODE_HOST")

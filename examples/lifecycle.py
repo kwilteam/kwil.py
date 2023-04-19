@@ -3,17 +3,14 @@ import logging
 
 from kwil import Kwil
 
-# configuration
-os.environ["KWIL_ETH_PRIVATE_KEY"] = "YOUR_PRIVATE_KEY"
-
 
 def run():
     # assume that account has enough fund
     # here we use test_db.kf as our dataset schema, we'll use test_db.json(compiled schema)
-    # change `owner` in test_db.json to `YOUR_PRIVATE_KEY`
 
     # create client
-    client = Kwil(Kwil.GRPCProvider("localhost:50051"))
+    client = Kwil(Kwil.GRPCProvider("localhost:50051"),
+                  Kwil.load_wallet("YOUR_ETH_PRIVATE_KEY"))
 
     # create dataset
     with open("./test_db.json", "r") as f:

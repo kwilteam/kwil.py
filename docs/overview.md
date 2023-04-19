@@ -23,6 +23,7 @@ There is a [example](https://github.com/kwilteam/kwil.py/blob/main/examples/life
 ### Dataset Identifier helpers
 
 * `Kwil.generate_dbi(owner_addr, dataset_name)`
+* `Kwil.load_wallet(private_key)`
 
 ### high level API
 

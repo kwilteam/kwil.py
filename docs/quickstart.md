@@ -27,9 +27,9 @@ This library depends on a connection to an Kwil node. We call these connections 
 
 
 ```
-# NOTE: set env variable KWIL_ETH_PRIVATE_KEY to your eth private key
 >>> from kwil import Kwil
->>> kwil = Kwil(Kwil.GRPCProvider("localhost:50051"))
+>>> kwil = Kwil(Kwil.GRPCProvider("localhost:50051")
+                Kwil.load_wallet("YOUR_ETH_PRIVATE_KEY"))
 >>> kwil.is_connected()
 True
 ```

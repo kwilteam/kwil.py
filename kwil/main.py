@@ -39,6 +39,10 @@ class BaseKwil:
     def generate_dbi(cls, owner: str, db_name: str) -> DBIdentifier:
         return generate_dbi(owner, db_name)
 
+    @classmethod
+    def load_wallet(cls, private_key: str) -> LocalAccount:
+        return load_wallet(private_key)
+
 
 class Kwil(BaseKwil):
     def __init__(
@@ -47,11 +51,10 @@ class Kwil(BaseKwil):
         wallet: Optional[LocalAccount] = None,
     ):
         self.manager = self.RequestManager(self, provider)
-
         self.kwild = Kwild(self)
 
         if wallet is None:
-            self._wallet = load_wallet(os.getenv("KWIL_ETH_PRIVATE_KEY"))
+            self._wallet = self.load_wallet(os.getenv("KWIL_ETH_PRIVATE_KEY"))
         else:
             self._wallet = wallet
 
