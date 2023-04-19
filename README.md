@@ -7,7 +7,7 @@ Borrows heavily from [web3.py](https://github.com/ethereum/web3.py)
 
 -----
 
-Check [quickstart](./docs/quickstart.md) to get started.
+Check [quickstart](https://github.com/kwilteam/kwil.py/blob/main/docs/quickstart.md) to get started.
 
 
 ## License
