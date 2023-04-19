@@ -23,6 +23,11 @@ clean-pyc: ## remove Python file artifacts
 
 clean: clean-build clean-pyc
 
+release: clean ## build package and upload a release
+	python -m build
+	ls -l dist
+	python -m twine upload --repository pypi dist/*
+
 test: ## run tests quickly with the default Python
 	pytest tests
 
