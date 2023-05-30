@@ -13,14 +13,14 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16kwil/tx/v1/query.proto\x12\x02tx\"+\n\x0cQueryRequest\x12\x0c\n\x04\x64\x62id\x18\x01 \x01(\t\x12\r\n\x05query\x18\x02 \x01(\t\"\x1f\n\rQueryResponse\x12\x0e\n\x06result\x18\x01 \x01(\x0c\x42\x1eZ\x1ckwil/api/protobuf/tx/v1;txpbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16kwil/tx/v1/query.proto\x12\x02tx\"+\n\x0cQueryRequest\x12\x0c\n\x04\x64\x62id\x18\x01 \x01(\t\x12\r\n\x05query\x18\x02 \x01(\t\"\x1f\n\rQueryResponse\x12\x0e\n\x06result\x18\x01 \x01(\x0c\x42\x35Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'kwil.tx.v1.query_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  DESCRIPTOR._serialized_options = b'Z\034kwil/api/protobuf/tx/v1;txpb'
+  DESCRIPTOR._serialized_options = b'Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpb'
   _QUERYREQUEST._serialized_start=30
   _QUERYREQUEST._serialized_end=73
   _QUERYRESPONSE._serialized_start=75

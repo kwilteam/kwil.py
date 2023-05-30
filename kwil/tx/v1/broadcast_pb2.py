@@ -14,14 +14,14 @@ _sym_db = _symbol_database.Default()
 from kwil.tx.v1 import tx_pb2 as kwil_dot_tx_dot_v1_dot_tx__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1akwil/tx/v1/broadcast.proto\x12\x02tx\x1a\x13kwil/tx/v1/tx.proto\"&\n\x10\x42roadcastRequest\x12\x12\n\x02tx\x18\x01 \x01(\x0b\x32\x06.tx.Tx\"3\n\x11\x42roadcastResponse\x12\x1e\n\x07receipt\x18\x01 \x01(\x0b\x32\r.tx.TxReceiptB\x1eZ\x1ckwil/api/protobuf/tx/v1;txpbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1akwil/tx/v1/broadcast.proto\x12\x02tx\x1a\x13kwil/tx/v1/tx.proto\"&\n\x10\x42roadcastRequest\x12\x12\n\x02tx\x18\x01 \x01(\x0b\x32\x06.tx.Tx\"3\n\x11\x42roadcastResponse\x12\x1e\n\x07receipt\x18\x01 \x01(\x0b\x32\r.tx.TxReceiptB5Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'kwil.tx.v1.broadcast_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  DESCRIPTOR._serialized_options = b'Z\034kwil/api/protobuf/tx/v1;txpb'
+  DESCRIPTOR._serialized_options = b'Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpb'
   _BROADCASTREQUEST._serialized_start=55
   _BROADCASTREQUEST._serialized_end=93
   _BROADCASTRESPONSE._serialized_start=95

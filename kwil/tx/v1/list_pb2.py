@@ -13,14 +13,14 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15kwil/tx/v1/list.proto\x12\x02tx\"%\n\x14ListDatabasesRequest\x12\r\n\x05owner\x18\x01 \x01(\t\"*\n\x15ListDatabasesResponse\x12\x11\n\tdatabases\x18\x01 \x03(\tB\x1eZ\x1ckwil/api/protobuf/tx/v1;txpbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15kwil/tx/v1/list.proto\x12\x02tx\"%\n\x14ListDatabasesRequest\x12\r\n\x05owner\x18\x01 \x01(\t\"*\n\x15ListDatabasesResponse\x12\x11\n\tdatabases\x18\x01 \x03(\tB5Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'kwil.tx.v1.list_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  DESCRIPTOR._serialized_options = b'Z\034kwil/api/protobuf/tx/v1;txpb'
+  DESCRIPTOR._serialized_options = b'Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpb'
   _LISTDATABASESREQUEST._serialized_start=29
   _LISTDATABASESREQUEST._serialized_end=66
   _LISTDATABASESRESPONSE._serialized_start=68

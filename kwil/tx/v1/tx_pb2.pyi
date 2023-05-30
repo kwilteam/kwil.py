@@ -14,8 +14,8 @@ class Signature(_message.Message):
     SIGNATURE_BYTES_FIELD_NUMBER: _ClassVar[int]
     SIGNATURE_TYPE_FIELD_NUMBER: _ClassVar[int]
     signature_bytes: bytes
-    signature_type: SignatureType
-    def __init__(self, signature_bytes: _Optional[bytes] = ..., signature_type: _Optional[_Union[SignatureType, str]] = ...) -> None: ...
+    signature_type: int
+    def __init__(self, signature_bytes: _Optional[bytes] = ..., signature_type: _Optional[int] = ...) -> None: ...
 
 class Tx(_message.Message):
     __slots__ = ["fee", "hash", "nonce", "payload", "payload_type", "sender", "signature"]

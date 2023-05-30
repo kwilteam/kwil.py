@@ -13,14 +13,14 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17kwil/tx/v1/config.proto\x12\x02tx\"\x12\n\x10GetConfigRequest\"\x83\x01\n\x11GetConfigResponse\x12\x1e\n\nchain_code\x18\x01 \x01(\x03R\nchain_code\x12*\n\x10provider_address\x18\x02 \x01(\tR\x10provider_address\x12\"\n\x0cpool_address\x18\x03 \x01(\tR\x0cpool_addressB\x1eZ\x1ckwil/api/protobuf/tx/v1;txpbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17kwil/tx/v1/config.proto\x12\x02tx\"\x12\n\x10GetConfigRequest\"\x83\x01\n\x11GetConfigResponse\x12\x1e\n\nchain_code\x18\x01 \x01(\x03R\nchain_code\x12*\n\x10provider_address\x18\x02 \x01(\tR\x10provider_address\x12\"\n\x0cpool_address\x18\x03 \x01(\tR\x0cpool_addressB5Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'kwil.tx.v1.config_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  DESCRIPTOR._serialized_options = b'Z\034kwil/api/protobuf/tx/v1;txpb'
+  DESCRIPTOR._serialized_options = b'Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpb'
   _GETCONFIGREQUEST._serialized_start=31
   _GETCONFIGREQUEST._serialized_end=49
   _GETCONFIGRESPONSE._serialized_start=52
