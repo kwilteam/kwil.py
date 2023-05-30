@@ -3,7 +3,7 @@ import pytest
 from kwil.main import generate_dbi
 from kwil.types import TxPayloadType, TxParams, Nonce
 
-interactive = True
+non_interactive = True
 
 
 @pytest.mark.integration
@@ -104,30 +104,30 @@ class TestKwilBehavior:
         self._test_dropDatabase(client)
         self._test_listDatabase(client, 0)
 
-    @pytest.mark.skipif(interactive, reason="only interactive mode")
+    @pytest.mark.skipif(non_interactive, reason="only interactive mode")
     def test_deployDatabase(self, client, schema_file):
         self._test_deployDatabase(client, schema_file)
 
-    @pytest.mark.skipif(interactive, reason="only interactive mode")
+    @pytest.mark.skipif(non_interactive, reason="only interactive mode")
     def test_dropDatabase(self, client):
         self._test_dropDatabase(client)
 
-    @pytest.mark.skipif(interactive, reason="only interactive mode")
+    @pytest.mark.skipif(non_interactive, reason="only interactive mode")
     def test_getSchema(self, client):
         self._test_getSchema(client)
 
-    @pytest.mark.skipif(interactive, reason="only interactive mode")
+    @pytest.mark.skipif(non_interactive, reason="only interactive mode")
     def test_execute_insert_action(self, client):
         self._test_execute_insert_action(client)
 
-    @pytest.mark.skipif(interactive, reason="only interactive mode")
+    @pytest.mark.skipif(non_interactive, reason="only interactive mode")
     def test_execute_query_action(self, client):
         self._test_execute_query_action(client)
 
-    @pytest.mark.skipif(interactive, reason="only interactive mode")
+    @pytest.mark.skipif(non_interactive, reason="only interactive mode")
     def test_listDatabase(self, client):
         self._test_listDatabase(client, 1)
 
-    @pytest.mark.skipif(interactive, reason="only interactive mode")
+    @pytest.mark.skipif(non_interactive, reason="only interactive mode")
     def test_query(self, client):
         self._test_query(client, 1)

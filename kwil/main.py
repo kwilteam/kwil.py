@@ -17,7 +17,6 @@ from kwil.types import (
     ActionExecution,
 )
 from kwil._utils.transaction import sign_tx
-from kwil._utils.action import encode_action_inputs
 from kwil._utils.dataset import generate_dbi
 from kwil._utils.signing import load_wallet
 
@@ -87,7 +86,6 @@ class Kwil(BaseKwil):
             fee="0",
             # SHOULD be done in result formatter
             nonce=Nonce(int(account_info["nonce"]) + 1),
-            # nonce=Nonce(1),
         )
 
         price = self.kwild.estimate_price(tx_params)
@@ -126,10 +124,7 @@ class Kwil(BaseKwil):
     ) -> TxReceipt:
         # TODO: dynamic call action
         db_identifier = generate_dbi(self.wallet.address, db_name)
-        encoded_inputs = encode_action_inputs(inputs)
-        exec_body = ActionExecution(
-            action=action_name, dbID=db_identifier, params=encoded_inputs
-        )
+        exec_body = ActionExecution(action=action_name, dbID=db_identifier, params=inputs)
         payload_type = TxPayloadType.EXECUTE_ACTION
         payload = json.dumps(exec_body).encode()
         tx_params = self._create_tx(payload_type, payload)
