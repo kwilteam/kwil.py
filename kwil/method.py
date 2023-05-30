@@ -36,7 +36,9 @@ class Method(Generic[TFunc]):
 
     # as Descriptor
     def __get__(
-        self, obj: Optional["Module"] = None, obj_type: Optional[Type["Module"]] = None
+        self,
+        obj: Optional["Module"] = None,  # noqa: F821
+        obj_type: Optional[Type["Module"]] = None,  # noqa: F821
     ) -> TFunc:
         if obj is None:
             raise TypeError("Methods must be called on an instance of a Module class")
@@ -45,7 +47,7 @@ class Method(Generic[TFunc]):
     def method_selector_fn(self) -> Callable[..., Any]:
         raise NotImplementedError("Must be implemented by subclasses")
 
-    def process_params(self, module: "Module", *args: Any) -> Any:
+    def process_params(self, module: "Module", *args: Any) -> Any:  # noqa: F821
         # to simplify, kwargs are not supported
 
         method = self.rpc_method

@@ -11,7 +11,7 @@ from kwil.tx.v1 import (
     dataset_pb2,
     tx_pb2,
     list_pb2,
-    service_pb2_grpc
+    service_pb2_grpc,
 )
 
 # timeout in seconds

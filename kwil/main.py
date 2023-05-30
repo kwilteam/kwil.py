@@ -124,7 +124,9 @@ class Kwil(BaseKwil):
     ) -> TxReceipt:
         # TODO: dynamic call action
         db_identifier = generate_dbi(self.wallet.address, db_name)
-        exec_body = ActionExecution(action=action_name, dbID=db_identifier, params=inputs)
+        exec_body = ActionExecution(
+            action=action_name, dbID=db_identifier, params=inputs
+        )
         payload_type = TxPayloadType.EXECUTE_ACTION
         payload = json.dumps(exec_body).encode()
         tx_params = self._create_tx(payload_type, payload)

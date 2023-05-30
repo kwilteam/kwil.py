@@ -24,7 +24,7 @@ def _apply_result_formatters(
 class Module:
     @curry
     def caller_fn(
-        self, kwil: "Kwil", method: Method[Callable[..., Any]]
+        self, kwil: "Kwil", method: Method[Callable[..., Any]]  # noqa: F821
     ) -> Callable[..., Any]:
         def caller(*args: Any) -> Any:
             (method_str, args), response_formatters = method.process_params(self, *args)

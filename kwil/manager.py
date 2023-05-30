@@ -13,7 +13,7 @@ class RequestManager:
 
     def __init__(
         self,
-        kwil: "Kwil",
+        kwil: "Kwil",  # noqa: F821
         provider: Optional[BaseProvider] = None,
         # middlewares: Optional[List[Tuple[str, Middleware]]] = None,
     ):
