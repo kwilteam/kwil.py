@@ -26,11 +26,11 @@ There is a [example](https://github.com/kwilteam/kwil.py/blob/main/examples/life
 ### high level API
 
 * `kwil.deploy_database(payload)` - deploys a new database, payload is compiled bytes of schema
-* `kwil.get_database(dataset_name, OPTIONAL[owner_address])` - returns the database object
-* `kwil.list_database(OPTIONAL[owner_address])` - returns the list of databases under current account
+* `kwil.get_schema(db_identifier)` - returns the database schema
+* `kwil.list_databases(OPTIONAL[owner_address])` - returns the list of databases under current account
 * `kwil.drop_database(dataset_name)` - drops the database under current account
-* `kwil.execute_action(dataset_name, action_name, inputs)` - executes the action on the database
-* `kwil.query(dataset_name, query)` - executes query(ad-hoc SQL) on the database
+* `kwil.execute_action(db_identifier, action_name, inputs)` - executes the action on the database
+* `kwil.query(db_identifier, query)` - executes query(ad-hoc SQL) on the database
 
 ## low level API (Kwil.kwild API)
 
@@ -42,8 +42,8 @@ There is a [example](https://github.com/kwilteam/kwil.py/blob/main/examples/life
 * `Kwil.kwild.get_account(Adddress)` - returns the account info(nonce, balance, etc)
 * `Kwil.kwild.estimate_price(TxParams)` - returns the estimated price for the transaction
 * `Kwil.kwild.query(DBIdentifier, Query)` - returns the query(ad-hoc SQL) result
-* `Kwil.kwild.list_database()` - returns the list of databases under current account
+* `Kwil.kwild.list_databases()` - returns the list of databases under current account
 
 ### Making transactions
 
-* `Kwil.kwild.broardcase(TxParams)` - broadcasts the transaction to the network
+* `Kwil.kwild.broadcast(TxParams)` - broadcasts the transaction to the network

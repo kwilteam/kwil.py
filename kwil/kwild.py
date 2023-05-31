@@ -36,8 +36,8 @@ class Kwild(BaseKwild):
     """Kwil Chain class"""
 
     get_schema: Method[Callable[[DBIdentifier], DBSchema]] = Method(GRPC.kwil_getSchema)
-    list_database: Method[Callable[[HexAddress], List[DBSchema]]] = Method(
-        GRPC.kwil_listDatabase
+    list_databases: Method[Callable[[HexAddress], List[DBSchema]]] = Method(
+        GRPC.kwil_listDatabases
     )
     get_account: Method[Callable[[HexAddress], AccountInfo]] = Method(
         GRPC.kwil_getAccount

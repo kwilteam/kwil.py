@@ -9,8 +9,8 @@ def run():
     # here we use test_db.kf as our dataset schema, we'll use test_db.json(compiled schema)
 
     # create client
-    client = Kwil(Kwil.GRPCProvider("localhost:50051"),
-                  Kwil.load_wallet("YOUR_ETH_PRIVATE_KEY"))
+    client = Kwil(Kwil.GRPCProvider(os.getenv("KWIL_PROVIDER", "grpc.kwil.com:80")),
+                  Kwil.load_wallet(os.getenv("KWIL_CLI_PRIVATE_KEY", "EMPTY_KEY")))
 
     # create dataset
     with open("./test_db.json", "r") as f:
@@ -21,14 +21,16 @@ def run():
             logging.exception(e)
 
     # list dataset
-    dbs = client.list_database()
+    dbs = client.list_databases()
     print("datasets after create: ", dbs)
 
     # execute an action
-    db_name = "testdb"
+    db_name = "testdb"  # The name of the database, from the schema file
+    db_id = Kwil.generate_dbi(client.wallet.address, db_name)
+
     action = "create_user"
     tx_receipt = client.execute_action(
-        db_name,
+        db_id,
         action,
         # `create_user` is defined in test_db.kf
         [{"$id": 1, "$username": "aha", "$age": 18}],
@@ -37,7 +39,7 @@ def run():
 
     # execute a pre-defined query through action
     action = "list_users"
-    tx_receipt = client.execute_action(db_name, action, [])
+    tx_receipt = client.execute_action(db_id, action, [])
     print("list user result:", tx_receipt)
 
     # drop dataset
@@ -45,7 +47,7 @@ def run():
     print("drop dataset result: ", tx_receipt)
 
     # list dataset
-    dbs = client.list_database()
+    dbs = client.list_databases()
     print("datasets after delete: ", dbs)
 
 

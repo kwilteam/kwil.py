@@ -80,6 +80,6 @@ class Client:
         req = dataset_pb2.GetSchemaRequest(dbid=db_id)
         return self.tx_stub.GetSchema(req, timeout=self.request_timeout)
 
-    def list_database(self, owner: HexAddress) -> list_pb2.ListDatabasesResponse:
+    def list_databases(self, owner: HexAddress) -> list_pb2.ListDatabasesResponse:
         req = list_pb2.ListDatabasesRequest(owner=owner)
         return self.tx_stub.ListDatabases(req, timeout=self.request_timeout)

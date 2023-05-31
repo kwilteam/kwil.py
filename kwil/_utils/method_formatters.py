@@ -58,13 +58,13 @@ response_formatters: Dict[str, Callable[[Any], Any]] = {
     GRPC.kwil_getAccount: extract_result("account"),
     GRPC.kwil_estimatePrice: extract_result("price"),
     GRPC.kwil_broadcast: tx_receipt_decode,
-    GRPC.kwil_listDatabase: extract_result("databases"),
+    GRPC.kwil_listDatabases: extract_result("databases"),
     GRPC.kwil_query: query_decode,
 }
 
 
 def get_response_formatters(
-    method_name: RPCEndpoint, module: "Module"
+    method_name: RPCEndpoint, module: "Module"  # noqa: F821
 ) -> Callable[..., Any]:
     formatter_maps = (response_formatters,)
 

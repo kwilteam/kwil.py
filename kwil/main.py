@@ -98,16 +98,13 @@ class Kwil(BaseKwil):
         tx_params = self._create_tx(payload_type, payload)
         return self.kwild.broadcast(tx_params)
 
-    def get_database(self, name: str, owner: Optional[str] = None) -> Dict[str, Any]:
-        if owner is None:
-            owner = self.wallet.address
-        db_identifier = generate_dbi(owner, name)
-        return self.kwild.get_schema(db_identifier)
+    def get_schema(self, db_id: DBIdentifier) -> Dict[str, Any]:
+        return self.kwild.get_schema(db_id)
 
-    def list_database(self, address: Optional[str] = None) -> List[Dict[str, Any]]:
+    def list_databases(self, address: Optional[str] = None) -> List[Dict[str, Any]]:
         if address is None:
             address = self.wallet.address
-        return self.kwild.list_database(address)
+        return self.kwild.list_databases(address)
 
     def drop_database(self, name: str) -> TxReceipt:
         payload_type = TxPayloadType.DROP_DATABASE
@@ -118,20 +115,18 @@ class Kwil(BaseKwil):
 
     def execute_action(
         self,
-        db_name: str,
+        db_id: DBIdentifier,
         action_name: str,
         inputs: List[Dict[str, Any]],
     ) -> TxReceipt:
         # TODO: dynamic call action
-        db_identifier = generate_dbi(self.wallet.address, db_name)
         exec_body = ActionExecution(
-            action=action_name, dbID=db_identifier, params=inputs
+            action=action_name, dbID=db_id, params=inputs
         )
         payload_type = TxPayloadType.EXECUTE_ACTION
         payload = json.dumps(exec_body).encode()
         tx_params = self._create_tx(payload_type, payload)
         return self.kwild.broadcast(tx_params)
 
-    def query(self, db_name: str, query: str) -> TxReceipt:
-        db_identifier = generate_dbi(self.wallet.address, db_name)
-        return self.kwild.query(db_identifier, query)
+    def query(self, db_id: DBIdentifier, query: str) -> TxReceipt:
+        return self.kwild.query(db_id, query)

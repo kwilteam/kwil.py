@@ -65,7 +65,7 @@ with an Ethereum account which needed to be funded to use Kwil.
 
 ## API
 
-There is a [example](https://github.com/kwilteam/kwil.py/blob/main/examples/lifecycle.py) that shows how to use these API.
+There are [examples](https://github.com/kwilteam/kwil.py/blob/main/examples/README.md) that shows how to use these API.
 
 ### helpers
 
@@ -75,11 +75,11 @@ There is a [example](https://github.com/kwilteam/kwil.py/blob/main/examples/life
 ### high level API
 
 * `kwil.deploy_database(payload)` - deploys a new database, payload is compiled bytes of schema
-* `kwil.get_database(dataset_name, OPTIONAL[owner_address])` - returns the database object
-* `kwil.list_database(OPTIONAL[owner_address])` - returns the list of databases under current account
+* `kwil.get_schema(db_identifier)` - returns the database schema
+* `kwil.list_databases(OPTIONAL[owner_address])` - returns the list of databases under current account
 * `kwil.drop_database(dataset_name)` - drops the database under current account
-* `kwil.execute_action(dataset_name, action_name, inputs)` - executes the action on the database
-* `kwil.query(dataset_name, query)` - executes query(ad-hoc SQL) on the database
+* `kwil.execute_action(db_identifier, action_name, inputs)` - executes the action on the database
+* `kwil.query(db_identifier, query)` - executes query(ad-hoc SQL) on the database
 
 ### low level API (Kwil.kwild API)
 
@@ -91,11 +91,11 @@ There is a [example](https://github.com/kwilteam/kwil.py/blob/main/examples/life
 * `Kwil.kwild.get_account(Adddress)` - returns the account info(nonce, balance, etc)
 * `Kwil.kwild.estimate_price(TxParams)` - returns the estimated price for the transaction
 * `Kwil.kwild.query(DBIdentifier, Query)` - returns the query(ad-hoc SQL) result
-* `Kwil.kwild.list_database()` - returns the list of databases under current account
+* `Kwil.kwild.list_databases()` - returns the list of databases under current account
 
 #### Making transactions
 
-* `Kwil.kwild.broardcase(TxParams)` - broadcasts the transaction to the network
+* `Kwil.kwild.broadcast(TxParams)` - broadcasts the transaction to the network
 
 
 ## Usage
@@ -123,11 +123,12 @@ Then, create a `Kwil` instance, can call `deploy_database` to deploy the schema 
 
 Finally, call `list_database` to list all the databases under current account to verify it's there.
 
-
 ```python
 import logging
 
 from kwil import Kwil
+
+
 # assume that account has enough fund
 # here we use examples/test_db.kf as our dataset schema, we'll use examples/test_db.json(compiled schema)
 
@@ -144,7 +145,7 @@ with open("./test_db.json", "r") as f:
         logging.exception(e)
 
 # list dataset
-dbs = client.list_database()
+dbs = client.list_databases()
 print("datasets after create: ", dbs)
 ```    
 
@@ -152,9 +153,11 @@ print("datasets after create: ", dbs)
 
 ```python
 # execute an action
-db_name = "testdb"
+db_name = "testdb"  # The name of the database, from the schema file
+db_id = Kwil.generate_dbi(client.wallet.address, db_name)
+
 action = "create_user"
-tx_receipt = client.execute_action(db_name,
+tx_receipt = client.execute_action(db_id,
                                    action,
                                    # `create_user` is defined in examples/test_db.kf
                                    [{"$id": 1, "$username": "aha", "$age": 18}])
@@ -163,7 +166,7 @@ print("create user result: ", result)
 
 # execute a pre-defined query through action
 action = "list_users"
-tx_receipt = client.execute_action(db_name, action, [])
+tx_receipt = client.execute_action(db_id, action, [])
 result = tx_receipt["result"]
 print("list user result:", result)
 ```
@@ -179,9 +182,9 @@ action create_user($id, $username, $age) public {
 
 `create_user` is a public action, so we can call it without any permission.
 
-To call this action, we need to provide the dataset name, action name and inputs.
+To call this action, we need to provide the dataset identifier, action name and inputs.
 ```python
-tx_receipt = client.execute_action(db_name,
+tx_receipt = client.execute_action(db_id,
                                    action,
                                    [{"$id": 1, "$username": "aha", "$age": 18}])
 ```

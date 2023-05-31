@@ -1,6 +1,5 @@
 import pytest
 
-from kwil.main import generate_dbi
 from kwil.types import TxPayloadType, TxParams, Nonce
 
 non_interactive = True
@@ -53,8 +52,8 @@ class TestKwilBehavior:
 
     def _test_getSchema(self, client):
         db_name = "testdb"
-        db_identifier = generate_dbi(client.wallet.address, db_name)
-        db_schema = client.kwild.get_schema(db_identifier)
+        db_identifier = client.generate_dbi(client.wallet.address, db_name)
+        db_schema = client.get_schema(db_identifier)
         assert db_schema is not None, "expect db_schema is not None"
         assert (
             db_schema["owner"].lower() == client.wallet.address.lower()
@@ -66,12 +65,14 @@ class TestKwilBehavior:
         args = [
             {"$id": 1, "$username": "aha", "$age": 18},
         ]
-        tx_receipt = client.execute_action(db_name, "create_user", args)
+        db_id = client.generate_dbi(client.wallet.address, db_name)
+        tx_receipt = client.execute_action(db_id, "create_user", args)
         assert tx_receipt is not None, "expect tx_receipt is not None"
 
     def _test_execute_query_action(self, client):
         db_name = "testdb"
-        tx_receipt = client.execute_action(db_name, "list_users", [])
+        db_id = client.generate_dbi(client.wallet.address, db_name)
+        tx_receipt = client.execute_action(db_id, "list_users", [])
         assert tx_receipt is not None, "expect tx_receipt is not None"
         resp = tx_receipt["result"]
         assert len(resp) > 0, "expect len(resp) > 0"
@@ -83,13 +84,14 @@ class TestKwilBehavior:
         assert resp["age"] == 18, "expect resp['age'] == 18"
 
     def _test_listDatabase(self, client, count: int):
-        db_list = client.list_database()
+        db_list = client.list_databases()
         assert len(db_list) == count, f"expect len(db_list) == {count}"
 
     def _test_query(self, client, count: int):
         query = "select * from users"
         db_name = "testdb"
-        tx_receipt = client.query(db_name, query)
+        db_id = client.generate_dbi(client.wallet.address, db_name)
+        tx_receipt = client.query(db_id, query)
         resp = tx_receipt["result"]
         assert tx_receipt is not None, "expect tx_receipt is not None"
         assert len(resp) == count, f"expect len(resp) == {count}"

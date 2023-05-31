@@ -92,7 +92,7 @@ request_validators: Dict[RPCEndpoint, Callable[..., Any]] = {
     GRPC.kwil_getConfig: identity,
     GRPC.kwil_getSchema: apply_validator_at_index(validate_db_identifier, 0),
     GRPC.kwil_getAccount: apply_validator_at_index(validate_address, 0),
-    GRPC.kwil_listDatabase: apply_validator_at_index(validate_address, 0),
+    GRPC.kwil_listDatabases: apply_validator_at_index(validate_address, 0),
     GRPC.kwil_broadcast: apply_validator_at_index(validate_tx_params, 0),
     GRPC.kwil_estimatePrice: apply_validator_at_index(validate_tx_params, 0),
     GRPC.kwil_query: compose(

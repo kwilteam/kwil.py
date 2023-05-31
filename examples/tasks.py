@@ -4,9 +4,13 @@ This file is a demo of how to use kwil by implementing a simple task runner usin
 """
 
 import os
+import pprint
 
 from invoke import task
 from kwil import Kwil
+
+
+pp = pprint.PrettyPrinter(indent=4)
 
 
 def get_kwil(rpc_url: str, private_key: str) -> Kwil:
@@ -15,7 +19,11 @@ def get_kwil(rpc_url: str, private_key: str) -> Kwil:
 
 
 k = get_kwil(os.getenv("KWIL_PROVIDER", "grpc.kwil.com:80"),
-             os.getenv("KWIL_CLI_PRIVATE_KEY", "xxxx"))
+             os.getenv("KWIL_CLI_PRIVATE_KEY", "EMPTY_KEY"))
+
+
+db_name = "testdb"  # The name of the database, from the schema file
+db_id = Kwil.generate_dbi(k.wallet.address, db_name)
 
 
 @task(help={"schema_file": "The schema file of the database"})
@@ -35,6 +43,40 @@ def deploy(c,
             print(e)
 
 
+@task()
+def list_dbs(c):
+    """
+    List all databases.
+    """
+    dbs = k.list_databases()
+    pp.pprint(dbs)
+
+
+@task(help={"name": "The name of the database"})
+def get_schema(c,
+               name: str = "testdb"):
+    """
+    Get the schema of a database.
+    """
+    assert name != "", "db_name is required"
+
+    _db_id = Kwil.generate_dbi(k.wallet.address, name)
+    dbs = k.get_schema(_db_id)
+    pp.pprint(dbs)
+
+
+@task(help={"name": "The name of the database"})
+def drop(c,
+         name: str = "testdb"):
+    """
+    Drop a database.
+    """
+    assert name != "", "db_name is required"
+
+    tx_receipt = k.drop_database(name)
+    pp.pprint(tx_receipt)
+
+
 @task(help={"id": "The id of the user",
             "username": "The name of the user",
             "age": "The age of the user"})
@@ -49,14 +91,14 @@ def create_user(c,
     assert username != "", "username is required"
     assert age != 0, "age is required"
 
-    tx_receipt = k.execute_action("testdb",
+    tx_receipt = k.execute_action(db_id,
                                   "create_user",
                                   [{
                                       "$id": id,
                                       "$username": username,
                                       "$age": age
                                   }])
-    print(tx_receipt)
+    pp.pprint(tx_receipt)
 
 
 @task(help={"id": "The id of the post",
@@ -73,14 +115,14 @@ def create_post(c,
     assert title != "", "title is required"
     assert content != "", "content is required"
 
-    tx_receipt = k.execute_action("testdb",
+    tx_receipt = k.execute_action(db_id,
                                   "create_post",
                                   [{
                                       "$id": id,
                                       "$title": title,
                                       "$content": content
                                   }])
-    print(tx_receipt)
+    pp.pprint(tx_receipt)
 
 
 @task(help={"id": "The id of the post"})
@@ -91,12 +133,12 @@ def delete_post(c,
     """
     assert id != 0, "id is required"
 
-    tx_receipt = k.execute_action("testdb",
+    tx_receipt = k.execute_action(db_id,
                                   "delete_post",
                                   [{
                                       "$id": id
                                   }])
-    print(tx_receipt)
+    pp.pprint(tx_receipt)
 
 
 @task()
@@ -104,10 +146,10 @@ def list_users(c):
     """
     List all users.
     """
-    tx_receipt = k.execute_action("testdb",
+    tx_receipt = k.execute_action(db_id,
                                   "list_users",
                                   [])
-    print(tx_receipt)
+    pp.pprint(tx_receipt)
 
 
 @task(help={"username": "The username of the user"})
@@ -118,12 +160,12 @@ def list_posts(c,
     """
     assert username != "", "username is required"
 
-    tx_receipt = k.execute_action("testdb",
+    tx_receipt = k.execute_action(db_id,
                                   "get_user_posts",
                                   [{
                                       "$username": username
                                   }])
-    print(tx_receipt)
+    pp.pprint(tx_receipt)
 
 
 @task(help={"query": "Raw SQL query to execute."})
@@ -133,6 +175,6 @@ def query(c, query: str = ""):
     """
     assert query != "", "query is required"
 
-    tx_receipt = k.query("testdb", query)
+    tx_receipt = k.query(db_id, query)
 
-    print(tx_receipt)
+    pp.pprint(tx_receipt)
