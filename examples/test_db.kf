@@ -41,13 +41,7 @@ action delete_post($id) public {
     );
 }
 
-action get_user_by_wallet($address) public {
-    SELECT *
-    FROM users
-    WHERE wallet = $address;
-}
-
-action list_users() private {
+action list_users() public {
     SELECT *
     FROM users;
 }

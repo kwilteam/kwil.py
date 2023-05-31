@@ -15,29 +15,49 @@ table posts {
 }
 
 action create_user($id, $username, $age) public {
-    INSERT INTO users( id , username , age , wallet ) VALUES ( $id , $username , $age , @caller );
+    INSERT INTO users (id, username, age, wallet)
+    VALUES ($id, $username, $age, @caller);
 }
 
 action update_username($username) public {
-    UPDATE users SET username = $username WHERE wallet = @caller;
+    UPDATE users
+    SET username = $username
+    WHERE wallet = @caller;
 }
 
-action create_post($id, $title, $content) {
-    INSERT INTO posts( id , user_id , title , content ) VALUES ( $id , ( SELECT id FROM users WHERE wallet = @caller ) , $title , $content );
+action create_post($id, $title, $content) private {
+    INSERT INTO posts (id, user_id, title, content)
+    VALUES ($id, (
+        SELECT id FROM users WHERE wallet = @caller
+    ), $title, $content);
 }
 
 action delete_post($id) public {
-    DELETE FROM posts WHERE id = $id AND user_id =( SELECT id FROM users WHERE wallet = @caller );
+    DELETE FROM posts
+    WHERE id = $id AND user_id = (
+        SELECT id
+        FROM users
+        WHERE wallet = @caller
+    );
 }
 
 action get_user_by_wallet($address) public {
-    SELECT * FROM users WHERE wallet = $address;
+    SELECT *
+    FROM users
+    WHERE wallet = $address;
 }
 
-action list_users() {
-    SELECT * FROM users;
+action list_users() private {
+    SELECT *
+    FROM users;
 }
 
 action get_user_posts($username) public {
-    SELECT title , content FROM posts WHERE user_id =( SELECT id FROM users WHERE username = $username );
+    SELECT title, content
+    FROM posts
+    WHERE user_id = (
+        SELECT id
+        FROM users
+        WHERE username = $username
+    );
 }

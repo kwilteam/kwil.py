@@ -7,7 +7,6 @@ from toolz import curry, compose, identity
 from kwil.types import RPCEndpoint
 from kwil._utils.rpcs import GRPC
 from kwil._utils.validation import request_validators
-from kwil.module import Module
 
 
 def get_request_formatters(method_name: RPCEndpoint) -> Callable[..., Any]:

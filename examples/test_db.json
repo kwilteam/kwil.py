@@ -7,64 +7,58 @@
       "columns": [
         {
           "name": "id",
-          "type": 103,
+          "type": "int",
           "attributes": [
             {
-              "type": 101,
-              "value": null
+              "type": "primary_key"
             },
             {
-              "type": 103,
-              "value": null
+              "type": "not_null"
             }
           ]
         },
         {
           "name": "username",
-          "type": 102
+          "type": "text"
         },
         {
           "name": "age",
-          "type": 103
+          "type": "int"
         },
         {
           "name": "wallet",
-          "type": 102
+          "type": "text"
         }
-      ],
-      "indexes": []
+      ]
     },
     {
       "name": "posts",
       "columns": [
         {
           "name": "id",
-          "type": 103,
+          "type": "int",
           "attributes": [
             {
-              "type": 101,
-              "value": null
+              "type": "primary_key"
             },
             {
-              "type": 103,
-              "value": null
+              "type": "not_null"
             }
           ]
         },
         {
           "name": "user_id",
-          "type": 103
+          "type": "int"
         },
         {
           "name": "title",
-          "type": 102
+          "type": "text"
         },
         {
           "name": "content",
-          "type": 102
+          "type": "text"
         }
-      ],
-      "indexes": []
+      ]
     }
   ],
   "actions": [
@@ -113,18 +107,8 @@
       ]
     },
     {
-      "name": "get_user_by_wallet",
-      "public": true,
-      "inputs": [
-        "$address"
-      ],
-      "statements": [
-        "SELECT * FROM users WHERE wallet = $address"
-      ]
-    },
-    {
       "name": "list_users",
-      "public": false,
+      "public": true,
       "inputs": [],
       "statements": [
         "SELECT * FROM users"
