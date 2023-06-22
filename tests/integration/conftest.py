@@ -1,5 +1,6 @@
 import os
 import logging
+import json
 
 import pytest
 from dotenv.main import load_dotenv
@@ -38,3 +39,10 @@ def change_test_dir(request, monkeypatch):
 @pytest.fixture(scope="module")
 def schema_file():
     return "./test_data/test_schema.json"
+
+
+@pytest.fixture(scope="module")
+def db_name(schema_file):
+    with open(f"./tests/integration/{schema_file}", 'r') as json_file:
+        schema = json.load(json_file)
+        return schema["name"]

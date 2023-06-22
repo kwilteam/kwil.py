@@ -8,8 +8,9 @@ import pprint
 
 from invoke import task
 from kwil import Kwil
+from dotenv import load_dotenv
 
-
+load_dotenv()
 pp = pprint.PrettyPrinter(indent=4)
 
 
@@ -18,8 +19,8 @@ def get_kwil(rpc_url: str, private_key: str) -> Kwil:
                 Kwil.load_wallet(private_key))
 
 
-k = get_kwil(os.getenv("KWIL_PROVIDER", "grpc.kwil.com:80"),
-             os.getenv("KWIL_CLI_PRIVATE_KEY", "EMPTY_KEY"))
+k = get_kwil(os.getenv("KWIL_PROVIDER", "grpc-dev.kwil.com:80"),
+             os.getenv("KWIL_CLI_PRIVATE_KEY", ""))
 
 
 db_name = "testdb"  # The name of the database, from the schema file
