@@ -94,6 +94,11 @@ class Kwil(BaseKwil):
         return tx_params
 
     def deploy_database(self, payload: bytes) -> TxReceipt:
+        # populate owner
+        schema = json.loads(payload)
+        schema["owner"] = self.wallet.address
+        payload = json.dumps(schema).encode("utf-8")
+
         payload_type = TxPayloadType.DEPLOY_DATABASE
         tx_params = self._create_tx(payload_type, payload)
         return self.kwild.broadcast(tx_params)
