@@ -1,0 +1,164 @@
+{
+  "owner": "",
+  "name": "kwilpy_testdb",
+  "tables": [
+    {
+      "name": "users",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "attributes": [
+            {
+              "type": "primary_key"
+            },
+            {
+              "type": "not_null"
+            }
+          ]
+        },
+        {
+          "name": "username",
+          "type": "text"
+        },
+        {
+          "name": "age",
+          "type": "int"
+        },
+        {
+          "name": "wallet",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "posts",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "attributes": [
+            {
+              "type": "primary_key"
+            },
+            {
+              "type": "not_null"
+            }
+          ]
+        },
+        {
+          "name": "user_id",
+          "type": "int"
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "content",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "name": "create_user",
+      "inputs": [
+        "$id",
+        "$username",
+        "$age"
+      ],
+      "public": true,
+      "mutability": "update",
+      "auxiliaries": null,
+      "statements": [
+        "INSERT INTO users (id, username, age, wallet)\n    VALUES ($id, $username, $age, @caller);"
+      ]
+    },
+    {
+      "name": "update_username",
+      "inputs": [
+        "$username"
+      ],
+      "public": true,
+      "mutability": "update",
+      "auxiliaries": null,
+      "statements": [
+        "UPDATE users\n    SET username = $username\n    WHERE wallet = @caller;"
+      ]
+    },
+    {
+      "name": "create_post",
+      "inputs": [
+        "$id",
+        "$title",
+        "$content"
+      ],
+      "public": true,
+      "mutability": "update",
+      "auxiliaries": null,
+      "statements": [
+        "INSERT INTO posts (id, user_id, title, content)\n    VALUES ($id, (\n        SELECT id FROM users WHERE wallet = @caller\n    ), $title, $content);"
+      ]
+    },
+    {
+      "name": "delete_post",
+      "inputs": [
+        "$id"
+      ],
+      "public": true,
+      "mutability": "update",
+      "auxiliaries": null,
+      "statements": [
+        "DELETE FROM posts\n    WHERE id = $id AND user_id = (\n        SELECT id\n        FROM users\n        WHERE wallet = @caller\n    );"
+      ]
+    },
+    {
+      "name": "cannot_be_called",
+      "inputs": null,
+      "public": false,
+      "mutability": "update",
+      "auxiliaries": null,
+      "statements": [
+        "SELECT *\n    FROM users;"
+      ]
+    },
+    {
+      "name": "get_user_posts",
+      "inputs": [
+        "$username"
+      ],
+      "public": true,
+      "mutability": "view",
+      "auxiliaries": null,
+      "statements": [
+        "SELECT title, content\n    FROM posts\n    WHERE user_id = (\n        SELECT id\n        FROM users\n        WHERE username = $username\n    );"
+      ]
+    },
+    {
+      "name": "user_post_count",
+      "inputs": [
+        "$id"
+      ],
+      "public": true,
+      "mutability": "view",
+      "auxiliaries": null,
+      "statements": [
+        "SELECT count(*) AS count\n    FROM posts\n    WHERE user_id = $id;"
+      ]
+    },
+    {
+      "name": "view_user_info",
+      "inputs": null,
+      "public": true,
+      "mutability": "view",
+      "auxiliaries": [
+        "mustsign"
+      ],
+      "statements": [
+        "SELECT username, age\n    FROM users\n    WHERE wallet = @caller;"
+      ]
+    }
+  ]
+}

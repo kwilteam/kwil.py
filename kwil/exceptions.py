@@ -20,3 +20,11 @@ class CannotHandleRequest(ValueError):
     """
 
     pass
+
+
+class WalletNotSet(ValueError):
+    """
+    The wallet is not set.
+    """
+
+    pass

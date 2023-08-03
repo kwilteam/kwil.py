@@ -4,6 +4,7 @@ import grpc
 
 from kwil.tx.v1 import account_pb2 as kwil_dot_tx_dot_v1_dot_account__pb2
 from kwil.tx.v1 import broadcast_pb2 as kwil_dot_tx_dot_v1_dot_broadcast__pb2
+from kwil.tx.v1 import call_pb2 as kwil_dot_tx_dot_v1_dot_call__pb2
 from kwil.tx.v1 import config_pb2 as kwil_dot_tx_dot_v1_dot_config__pb2
 from kwil.tx.v1 import dataset_pb2 as kwil_dot_tx_dot_v1_dot_dataset__pb2
 from kwil.tx.v1 import list_pb2 as kwil_dot_tx_dot_v1_dot_list__pb2
@@ -61,6 +62,11 @@ class TxServiceStub(object):
                 request_serializer=kwil_dot_tx_dot_v1_dot_dataset__pb2.GetSchemaRequest.SerializeToString,
                 response_deserializer=kwil_dot_tx_dot_v1_dot_dataset__pb2.GetSchemaResponse.FromString,
                 )
+        self.Call = channel.unary_unary(
+                '/tx.TxService/Call',
+                request_serializer=kwil_dot_tx_dot_v1_dot_call__pb2.CallRequest.SerializeToString,
+                response_deserializer=kwil_dot_tx_dot_v1_dot_call__pb2.CallResponse.FromString,
+                )
 
 
 class TxServiceServicer(object):
@@ -114,6 +120,12 @@ class TxServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Call(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_TxServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -156,6 +168,11 @@ def add_TxServiceServicer_to_server(servicer, server):
                     servicer.GetSchema,
                     request_deserializer=kwil_dot_tx_dot_v1_dot_dataset__pb2.GetSchemaRequest.FromString,
                     response_serializer=kwil_dot_tx_dot_v1_dot_dataset__pb2.GetSchemaResponse.SerializeToString,
+            ),
+            'Call': grpc.unary_unary_rpc_method_handler(
+                    servicer.Call,
+                    request_deserializer=kwil_dot_tx_dot_v1_dot_call__pb2.CallRequest.FromString,
+                    response_serializer=kwil_dot_tx_dot_v1_dot_call__pb2.CallResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -300,5 +317,22 @@ class TxService(object):
         return grpc.experimental.unary_unary(request, target, '/tx.TxService/GetSchema',
             kwil_dot_tx_dot_v1_dot_dataset__pb2.GetSchemaRequest.SerializeToString,
             kwil_dot_tx_dot_v1_dot_dataset__pb2.GetSchemaResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Call(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tx.TxService/Call',
+            kwil_dot_tx_dot_v1_dot_call__pb2.CallRequest.SerializeToString,
+            kwil_dot_tx_dot_v1_dot_call__pb2.CallResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

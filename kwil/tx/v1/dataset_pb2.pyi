@@ -6,16 +6,20 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Action(_message.Message):
-    __slots__ = ["inputs", "name", "public", "statements"]
+    __slots__ = ["auxiliaries", "inputs", "mutability", "name", "public", "statements"]
+    AUXILIARIES_FIELD_NUMBER: _ClassVar[int]
     INPUTS_FIELD_NUMBER: _ClassVar[int]
+    MUTABILITY_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PUBLIC_FIELD_NUMBER: _ClassVar[int]
     STATEMENTS_FIELD_NUMBER: _ClassVar[int]
+    auxiliaries: _containers.RepeatedScalarFieldContainer[str]
     inputs: _containers.RepeatedScalarFieldContainer[str]
+    mutability: str
     name: str
     public: bool
     statements: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, name: _Optional[str] = ..., public: bool = ..., inputs: _Optional[_Iterable[str]] = ..., statements: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., public: bool = ..., inputs: _Optional[_Iterable[str]] = ..., statements: _Optional[_Iterable[str]] = ..., mutability: _Optional[str] = ..., auxiliaries: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class Attribute(_message.Message):
     __slots__ = ["type", "value"]

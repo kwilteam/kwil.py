@@ -2,8 +2,9 @@
 """
 This file is a demo of how to use kwil by implementing a simple task runner using invoke.
 """
-
+import json
 import os
+import sys
 import pprint
 
 from invoke import task
@@ -23,13 +24,25 @@ k = get_kwil(os.getenv("KWIL_PROVIDER", "grpc-dev.kwil.com:80"),
              os.getenv("KWIL_CLI_PRIVATE_KEY", ""))
 
 
-db_name = "testdb"  # The name of the database, from the schema file
+TEST_SCHEMA_FILE = "./testdb.json"
+
+db_name = None  # The name of the database, from the schema file\
+
+with open(TEST_SCHEMA_FILE, "r") as f:
+    try:
+        schema = json.load(f)
+        db_name = schema["name"]
+    except Exception as e:
+        print("failed to load schema", e)
+        sys.exit(1)
+
+
 db_id = Kwil.generate_dbi(k.wallet.address, db_name)
 
 
 @task(help={"schema_file": "The schema file of the database"})
 def deploy(c,
-           schema_file: str = "test_db.json"):
+           schema_file: str = TEST_SCHEMA_FILE):
     """
     Deploy a database.
     """
@@ -55,7 +68,7 @@ def list_dbs(c):
 
 @task(help={"name": "The name of the database"})
 def get_schema(c,
-               name: str = "testdb"):
+               name: str = db_name):
     """
     Get the schema of a database.
     """
@@ -68,7 +81,7 @@ def get_schema(c,
 
 @task(help={"name": "The name of the database"})
 def drop(c,
-         name: str = "testdb"):
+         name: str = db_name):
     """
     Drop a database.
     """
@@ -142,16 +155,27 @@ def delete_post(c,
     pp.pprint(tx_receipt)
 
 
-@task()
-def list_users(c):
+@task(help={"id": "The id of the post"})
+def user_post_count(c,
+               id: str = ""):
     """
-    List all users.
+    Query total numbers of users.
     """
-    tx_receipt = k.execute_action(db_id,
-                                  "list_users",
-                                  [])
+    tx_receipt = k.call_action(db_id,
+                                  "user_post_count",
+                               {"$id": id})
     pp.pprint(tx_receipt)
 
+
+@task()
+def view_user_info(c):
+    """
+    View your user info.
+    """
+    tx_receipt = k.call_action(db_id,
+                               "view_user_info",
+                               {})
+    pp.pprint(tx_receipt)
 
 @task(help={"username": "The username of the user"})
 def list_posts(c,

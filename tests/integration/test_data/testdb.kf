@@ -1,4 +1,4 @@
-database testdb;
+database kwilpy_testdb;
 
 table users {
     id int primary notnull,
@@ -25,7 +25,7 @@ action update_username($username) public {
     WHERE wallet = @caller;
 }
 
-action create_post($id, $title, $content) private {
+action create_post($id, $title, $content) public {
     INSERT INTO posts (id, user_id, title, content)
     VALUES ($id, (
         SELECT id FROM users WHERE wallet = @caller
@@ -41,12 +41,12 @@ action delete_post($id) public {
     );
 }
 
-action list_users() public {
+action cannot_be_called() private {
     SELECT *
     FROM users;
 }
 
-action get_user_posts($username) public {
+action get_user_posts($username) public view {
     SELECT title, content
     FROM posts
     WHERE user_id = (
@@ -54,4 +54,16 @@ action get_user_posts($username) public {
         FROM users
         WHERE username = $username
     );
+}
+
+action user_post_count($id) public view {
+    SELECT count(*) AS count
+    FROM posts
+    WHERE user_id = $id;
+}
+
+action view_user_info() public view mustsign {
+    SELECT username, age
+    FROM users
+    WHERE wallet = @caller;
 }

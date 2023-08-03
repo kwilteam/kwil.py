@@ -1,24 +1,30 @@
 import json
+import hashlib
 import os
 from typing import Optional, Dict, Any, List, cast
 
 from eth_account.signers.local import LocalAccount
 
+from kwil.exceptions import WalletNotSet
 from kwil.kwild import Kwild
 from kwil.provider import BaseProvider, GRPCProvider
 from kwil.manager import RequestManager as DefaultRequestManager
 from kwil.types import (
     TxPayloadType,
-    TxParams,
+    TxParam,
     Nonce,
     TxReceipt,
     DatasetIdentifier,
     DBIdentifier,
-    ActionExecution,
+    ExecuteActionPayload,
+    CallActionPayload,
+    CallParam,
+    ActionArg,
 )
 from kwil._utils.transaction import sign_tx
 from kwil._utils.dataset import generate_dbi
 from kwil._utils.signing import load_wallet
+from kwil._utils.action import sign_call_action
 
 
 class BaseKwil:
@@ -44,17 +50,19 @@ class BaseKwil:
 
 
 class Kwil(BaseKwil):
+    """
+    Kwil expose .
+    """
+
     def __init__(
-        self,
-        provider: Optional[BaseProvider] = None,
-        wallet: Optional[LocalAccount] = None,
+            self,
+            provider: Optional[BaseProvider] = None,
+            wallet: Optional[LocalAccount] = None,
     ):
         self.manager = self.RequestManager(self, provider)
         self.kwild = Kwild(self)
 
-        if wallet is None:
-            self._wallet = self.load_wallet(os.getenv("KWIL_ETH_PRIVATE_KEY"))
-        else:
+        if wallet:
             self._wallet = wallet
 
     @property
@@ -76,10 +84,10 @@ class Kwil(BaseKwil):
     def is_connected(self) -> bool:
         return self.kwil_provider.is_connected()
 
-    def _create_tx(self, payload_type: TxPayloadType, payload: bytes) -> TxParams:
+    def _create_tx(self, payload_type: TxPayloadType, payload: bytes) -> TxParam:
         account_info = self.kwild.get_account(self.wallet.address)
 
-        tx_params = TxParams(
+        tx_params = TxParam(
             payloadType=payload_type,
             payload=payload,
             sender=self.wallet.address,
@@ -119,14 +127,16 @@ class Kwil(BaseKwil):
         return self.kwild.broadcast(tx_params)
 
     def execute_action(
-        self,
-        db_id: DBIdentifier,
-        action_name: str,
-        inputs: List[Dict[str, Any]],
+            self,
+            db_id: DBIdentifier,
+            action_name: str,
+            params: List[Dict[str, Any]],
     ) -> TxReceipt:
-        # TODO: dynamic call action
-        exec_body = ActionExecution(
-            action=action_name, dbID=db_id, params=inputs
+        """
+        Execute an action on a database to change state, will send request as transaction.
+        """
+        exec_body = ExecuteActionPayload(
+            action=action_name, dbid=db_id, params=params
         )
         payload_type = TxPayloadType.EXECUTE_ACTION
         payload = json.dumps(exec_body).encode()
@@ -135,3 +145,22 @@ class Kwil(BaseKwil):
 
     def query(self, db_id: DBIdentifier, query: str) -> TxReceipt:
         return self.kwild.query(db_id, query)
+
+    def call_action(
+            self,
+            db_id: DBIdentifier,
+            action_name: str,
+            args: Dict[str, ActionArg],
+    ) -> TxReceipt:
+        """
+        Call an read-only action on a database, the request will need to be signed in some cases,
+        for example, a `mustsign` `view` action.
+        """
+
+        payload = CallActionPayload(
+                action=action_name,
+                dbid=db_id,
+                args=args)
+
+        call_param = sign_call_action(payload, self.wallet)
+        return self.kwild.call(call_param)
