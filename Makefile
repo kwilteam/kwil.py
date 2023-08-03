@@ -1,15 +1,18 @@
 .DEFAULT_GOAL := help
-.PHONY: protosrc proto help clean-build clean-pyc
+.PHONY: git-sync protosrc proto help clean-build clean-pyc
 
 help:
 	# 20s is the width of the first column
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 protofiles := $(wildcard protos/kwil/*/v0/*.proto)
-protosrc: $(protofiles) ## generate python source from proto files
+## generate python source file list from proto files
+protosrc: $(protofiles)
+
+git-sync: ## sync git submodules
+	git submodule update --remote
 
 proto: protosrc ## generate python source from proto files and compile
-	git submodule update --remote
 	python -m grpc_tools.protoc -I ./proto --python_out=. --pyi_out=. --grpc_python_out=. ./proto/kwil/tx/v1/*.proto
 
 clean-build: ## remove build artifacts

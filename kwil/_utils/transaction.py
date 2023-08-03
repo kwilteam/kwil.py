@@ -1,7 +1,7 @@
 import hashlib
 from eth_account.signers.local import LocalAccount
 
-from kwil.types import TxParams, TxPayloadType, Nonce
+from kwil.types import TxParam, TxPayloadType, Nonce
 from kwil._utils.signature import sign
 
 
@@ -30,10 +30,10 @@ def generate_tx_hash(
     return hashlib.sha384(data).digest()
 
 
-def sign_tx(params: TxParams, wallet: LocalAccount) -> TxParams:
+def sign_tx(params: TxParam, wallet: LocalAccount) -> TxParam:
     tx_hash = generate_tx_hash(
         params["payload"],
-        params["payloadType"],
+        params["payload_type"],
         params["fee"],
         params["nonce"],
     )

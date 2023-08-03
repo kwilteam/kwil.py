@@ -19,10 +19,11 @@ from kwil.tx.v1 import account_pb2 as kwil_dot_tx_dot_v1_dot_account__pb2
 from kwil.tx.v1 import config_pb2 as kwil_dot_tx_dot_v1_dot_config__pb2
 from kwil.tx.v1 import list_pb2 as kwil_dot_tx_dot_v1_dot_list__pb2
 from kwil.tx.v1 import dataset_pb2 as kwil_dot_tx_dot_v1_dot_dataset__pb2
+from kwil.tx.v1 import call_pb2 as kwil_dot_tx_dot_v1_dot_call__pb2
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x18kwil/tx/v1/service.proto\x12\x02tx\x1a\x1akwil/tx/v1/broadcast.proto\x1a\x16kwil/tx/v1/price.proto\x1a\x16kwil/tx/v1/query.proto\x1a\x15kwil/tx/v1/ping.proto\x1a\x18kwil/tx/v1/account.proto\x1a\x17kwil/tx/v1/config.proto\x1a\x15kwil/tx/v1/list.proto\x1a\x18kwil/tx/v1/dataset.proto\x1a\x1cgoogle/api/annotations.proto2\xd4\x05\n\tTxService\x12V\n\tBroadcast\x12\x14.tx.BroadcastRequest\x1a\x15.tx.BroadcastResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\"\x11/api/v1/broadcast:\x01*\x12g\n\rEstimatePrice\x12\x18.tx.EstimatePriceRequest\x1a\x19.tx.EstimatePriceResponse\"!\x82\xd3\xe4\x93\x02\x1b\"\x16/api/v1/estimate_price:\x01*\x12\x46\n\x05Query\x12\x10.tx.QueryRequest\x1a\x11.tx.QueryResponse\"\x18\x82\xd3\xe4\x93\x02\x12\"\r/api/v1/query:\x01*\x12_\n\nGetAccount\x12\x15.tx.GetAccountRequest\x1a\x16.tx.GetAccountResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/api/v1/accounts/{address}\x12?\n\x04Ping\x12\x0f.tx.PingRequest\x1a\x10.tx.PingResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/api/v1/ping\x12P\n\tGetConfig\x12\x14.tx.GetConfigRequest\x1a\x15.tx.GetConfigResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/api/v1/config\x12g\n\rListDatabases\x12\x18.tx.ListDatabasesRequest\x1a\x19.tx.ListDatabasesResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/v1/{owner}/databases\x12\x61\n\tGetSchema\x12\x14.tx.GetSchemaRequest\x1a\x15.tx.GetSchemaResponse\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/api/v1/databases/{dbid}/schemaB5Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x18kwil/tx/v1/service.proto\x12\x02tx\x1a\x1akwil/tx/v1/broadcast.proto\x1a\x16kwil/tx/v1/price.proto\x1a\x16kwil/tx/v1/query.proto\x1a\x15kwil/tx/v1/ping.proto\x1a\x18kwil/tx/v1/account.proto\x1a\x17kwil/tx/v1/config.proto\x1a\x15kwil/tx/v1/list.proto\x1a\x18kwil/tx/v1/dataset.proto\x1a\x15kwil/tx/v1/call.proto\x1a\x1cgoogle/api/annotations.proto2\x98\x06\n\tTxService\x12V\n\tBroadcast\x12\x14.tx.BroadcastRequest\x1a\x15.tx.BroadcastResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\"\x11/api/v1/broadcast:\x01*\x12g\n\rEstimatePrice\x12\x18.tx.EstimatePriceRequest\x1a\x19.tx.EstimatePriceResponse\"!\x82\xd3\xe4\x93\x02\x1b\"\x16/api/v1/estimate_price:\x01*\x12\x46\n\x05Query\x12\x10.tx.QueryRequest\x1a\x11.tx.QueryResponse\"\x18\x82\xd3\xe4\x93\x02\x12\"\r/api/v1/query:\x01*\x12_\n\nGetAccount\x12\x15.tx.GetAccountRequest\x1a\x16.tx.GetAccountResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/api/v1/accounts/{address}\x12?\n\x04Ping\x12\x0f.tx.PingRequest\x1a\x10.tx.PingResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/api/v1/ping\x12P\n\tGetConfig\x12\x14.tx.GetConfigRequest\x1a\x15.tx.GetConfigResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/api/v1/config\x12g\n\rListDatabases\x12\x18.tx.ListDatabasesRequest\x1a\x19.tx.ListDatabasesResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/v1/{owner}/databases\x12\x61\n\tGetSchema\x12\x14.tx.GetSchemaRequest\x1a\x15.tx.GetSchemaResponse\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/api/v1/databases/{dbid}/schema\x12\x42\n\x04\x43\x61ll\x12\x0f.tx.CallRequest\x1a\x10.tx.CallResponse\"\x17\x82\xd3\xe4\x93\x02\x11\"\x0c/api/v1/call:\x01*B5Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'kwil.tx.v1.service_pb2', globals())
@@ -46,6 +47,8 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _TXSERVICE.methods_by_name['ListDatabases']._serialized_options = b'\202\323\344\223\002\033\022\031/api/v1/{owner}/databases'
   _TXSERVICE.methods_by_name['GetSchema']._options = None
   _TXSERVICE.methods_by_name['GetSchema']._serialized_options = b'\202\323\344\223\002!\022\037/api/v1/databases/{dbid}/schema'
-  _TXSERVICE._serialized_start=262
-  _TXSERVICE._serialized_end=986
+  _TXSERVICE.methods_by_name['Call']._options = None
+  _TXSERVICE.methods_by_name['Call']._serialized_options = b'\202\323\344\223\002\021\"\014/api/v1/call:\001*'
+  _TXSERVICE._serialized_start=285
+  _TXSERVICE._serialized_end=1077
 # @@protoc_insertion_point(module_scope)

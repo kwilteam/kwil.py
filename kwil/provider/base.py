@@ -5,7 +5,7 @@ from google.protobuf.json_format import MessageToDict
 from google.protobuf import message as _message
 
 from kwil.types import RPCEndpoint, RPCResponse, Middleware
-from kwil._utils.rpcs import GRPC
+from kwil._utils.rpcs import RPC
 
 
 class BaseProvider:
@@ -66,7 +66,7 @@ class ProtoBaseProvider(BaseProvider):
 
     def is_connected(self) -> bool:
         try:
-            response = self.make_request(GRPC.kwil_ping, "")
+            response = self.make_request(RPC.kwil_ping, "")
         except Exception as ex:
             logging.exception("caught error", ex)
             return False

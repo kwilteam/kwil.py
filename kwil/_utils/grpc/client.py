@@ -1,11 +1,13 @@
 import grpc
+from google.protobuf import json_format
 
-from kwil.types import TxParams, DBIdentifier, HexAddress
+from kwil.types import TxParam, DBIdentifier, HexAddress, CallParam
 from kwil.tx.v1 import (
     ping_pb2,
     query_pb2,
     broadcast_pb2,
     account_pb2,
+    call_pb2,
     config_pb2,
     price_pb2,
     dataset_pb2,
@@ -19,7 +21,12 @@ READY_TIMEOUT = 3
 REQUEST_TIMEOUT = 2
 
 
+# TODO: make this interface to be exactly the same as rpc method
+# add another layer of abstraction, accept and return sdk-specific types
 class Client:
+    """
+    Client is a wrapper of grpc client.
+    """
     def __init__(
         self,
         endpoint: str,
@@ -43,25 +50,34 @@ class Client:
         req = query_pb2.QueryRequest(dbid=db_id, query=query)
         return self.tx_stub.Query(req, timeout=self.request_timeout)
 
-    def broadcast(self, tx: TxParams) -> broadcast_pb2.BroadcastResponse:
-        gtx = tx_pb2.Tx(
+    def call(self, param: CallParam) -> call_pb2.CallResponse:
+        req = call_pb2.CallRequest(
+            payload=param.get("payload"),
+            signature=param.get("signature"),
+            sender=param.get("sender"),
+        )
+
+        return self.tx_stub.Call(req, timeout=self.request_timeout)
+
+    def broadcast(self, tx: TxParam) -> broadcast_pb2.BroadcastResponse:
+        reqTx = tx_pb2.Tx(
             hash=tx.get("hash"),
             nonce=tx.get("nonce"),
             fee=tx.get("fee"),
-            payload_type=tx.get("payloadType"),
+            payload_type=tx.get("payload_type"),
             payload=tx.get("payload"),
             signature=tx.get("signature"),
             sender=tx.get("sender"),
         )
 
-        req = broadcast_pb2.BroadcastRequest(tx=gtx)
+        req = broadcast_pb2.BroadcastRequest(tx=reqTx)
         return self.tx_stub.Broadcast(req, timeout=self.request_timeout)
 
-    def estimate_price(self, tx: TxParams) -> price_pb2.EstimatePriceResponse:
+    def estimate_price(self, tx: TxParam) -> price_pb2.EstimatePriceResponse:
         gtx = tx_pb2.Tx(
             nonce=tx.get("nonce"),
             fee=tx.get("fee"),
-            payload_type=tx.get("payloadType"),
+            payload_type=tx.get("payload_type"),
             payload=tx.get("payload"),
         )
 

@@ -78,7 +78,8 @@ There are [examples](https://github.com/kwilteam/kwil.py/blob/main/examples/READ
 * `kwil.get_schema(db_identifier)` - returns the database schema
 * `kwil.list_databases(OPTIONAL[owner_address])` - returns the list of databases under current account
 * `kwil.drop_database(dataset_name)` - drops the database under current account
-* `kwil.execute_action(db_identifier, action_name, inputs)` - executes the action on the database
+* `kwil.execute_action(db_identifier, action_name, inputs)` - executes the action on the database (inputs is a list of dict, where key is the argument name)
+* `kwil.call_action(db_identifier, action_name, inputs)` - calls the action on the database (inputs is a dict, where key is the argument name)
 * `kwil.query(db_identifier, query)` - executes query(ad-hoc SQL) on the database
 
 ### low level API (Kwil.kwild API)
@@ -130,14 +131,14 @@ from kwil import Kwil
 
 
 # assume that account has enough fund
-# here we use examples/test_db.kf as our dataset schema, we'll use examples/test_db.json(compiled schema)
+# here we use examples/testdb.kf as our dataset schema, we'll use examples/testdb.json(compiled schema)
 
 # create client
 client = Kwil(Kwil.GRPCProvider("localhost:50051"),
               Kwil.load_wallet("YOUR_ETH_PRIVATE_KEY"))
 
 # create dataset
-with open("./test_db.json", "r") as f:
+with open("./testdb.json", "r") as f:
     schema_json = f.read()
     try:
         client.deploy_database(schema_json.encode("utf-8"))
@@ -153,7 +154,6 @@ print("datasets after create: ", dbs)
 
 ```python
 # execute an action
-db_name = "testdb"  # The name of the database, from the schema file
 db_id = Kwil.generate_dbi(client.wallet.address, db_name)
 
 action = "create_user"
@@ -164,11 +164,10 @@ tx_receipt = client.execute_action(db_id,
 result = tx_receipt["result"]
 print("create user result: ", result)
 
-# execute a pre-defined query through action
-action = "list_users"
-tx_receipt = client.execute_action(db_id, action, [])
-result = tx_receipt["result"]
-print("list user result:", result)
+# call a view action
+action = "view_user_info"
+tx_receipt = client.call_action(db_id, action, {})
+print("user info:", tx_receipt)
 ```
 
 Let's extend the example above. We can call `execute_action` to execute an action on the database.
@@ -180,7 +179,7 @@ action create_user($id, $username, $age) public {
 }
 ```
 
-`create_user` is a public action, so we can call it without any permission.
+`create_user` is a public action, so we can call it from outside.
 
 To call this action, we need to provide the dataset identifier, action name and inputs.
 ```python

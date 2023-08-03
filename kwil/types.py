@@ -6,8 +6,9 @@ from typing import (
     TypeVar,
     TypedDict,
     Callable,
+    Union,
 )
-from enum import IntEnum
+from enum import IntEnum, Enum
 
 from kwil_typing import (
     DBIdentifier,
@@ -26,6 +27,9 @@ Nonce = NewType("Nonce", int)
 TReturn = TypeVar("TReturn")
 TParams = TypeVar("TParams")
 Middleware = Callable[[RPCEndpoint, Any], RPCResponse]
+DBRecords = List[Dict[str, Any]]
+DBList = List[str]
+ActionArg = Union[str, int]
 
 
 class DatasetIdentifier(TypedDict, total=True):
@@ -97,9 +101,9 @@ class Signature(TypedDict, total=True):
     signature_type: SignatureType
 
 
-class TxParams(TypedDict, total=False):
+class TxParam(TypedDict, total=False):
     hash: bytes
-    payloadType: TxPayloadType
+    payload_type: TxPayloadType
     payload: bytes
     fee: str
     nonce: Nonce
@@ -110,7 +114,15 @@ class TxParams(TypedDict, total=False):
 class TxReceipt(TypedDict, total=False):
     hash: bytes
     fee: str
+    # added by client after parsed
     body: Dict[str, Any]
+    result: Dict[str, Any]
+
+
+class TxReceiptClient(TypedDict, total=False):
+    hash: str
+    fee: str
+    # added by client after parsed
     result: Dict[str, Any]
 
 
@@ -157,16 +169,10 @@ class DBSchema(TypedDict, total=False):
     actions: List[ActionSchema]
 
 
-class ServiceConfig(TypedDict, total=False):
-    chainCode: int
-    providerAddress: HexAddress
-    poolAddress: HexAddress
-
-
-class ActionExecution(TypedDict, total=False):
-    action: str
-    dbID: DBIdentifier
-    params: List[Dict[str, Any]]
+class ChainConfig(TypedDict, total=False):
+    chain_code: int
+    provider_address: HexAddress
+    pool_address: HexAddress
 
 
 class ActionParamDataType(IntEnum):
@@ -182,5 +188,38 @@ class ActionParamDataType(IntEnum):
 
 class ActionParamValue(TypedDict, total=False):
     value: Any
-    dataType: ActionParamDataType
+    data_type: ActionParamDataType
     bytes: str
+
+
+class ExecuteActionPayload(TypedDict, total=False):
+    action: str
+    dbid: DBIdentifier
+    params: List[Dict[str, ActionArg]]
+
+
+class CallSigningPayload(TypedDict, total=False):
+    action: str
+    dbid: DBIdentifier
+    params: Dict[str, ActionArg]
+
+
+class CallActionPayload(TypedDict, total=True):
+    dbid: DBIdentifier
+    action: str
+    args: Dict[str, ActionArg]
+
+
+class CallParam(TypedDict, total=False):
+    payload: bytes
+    signature: Signature
+    sender: str
+
+
+class ActionMutabilityType(Enum):
+    UPDATE = "update"
+    VIEW = "view"
+
+
+class ActionAuxilaryType(Enum):
+    MUSTSIGN = "mustsign"

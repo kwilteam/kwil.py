@@ -1,6 +1,6 @@
 import pytest
 
-from kwil.types import TxPayloadType, TxParams, Nonce
+from kwil.types import TxPayloadType, TxParam, Nonce
 
 non_interactive = True
 
@@ -20,8 +20,8 @@ class TestKwilBehavior:
     def test_estimatePrice(self, client, schema_file):
         with open(schema_file, "r") as f:
             db_schema_str = f.read()
-            tx_params = TxParams(
-                payloadType=TxPayloadType.DEPLOY_DATABASE,
+            tx_params = TxParam(
+                payload_type=TxPayloadType.DEPLOY_DATABASE,
                 payload=db_schema_str.encode("utf-8"),
                 nonce=Nonce(1),
             )
@@ -59,7 +59,7 @@ class TestKwilBehavior:
         ), "expect db_schema['owner'] == client.wallet.address"
         assert db_schema["name"] == db_name, "expect db_schema['name'] == db_name"
 
-    def _test_execute_insert_action(self, db_name, client):
+    def _test_execute_action(self, db_name, client):
         args = [
             {"$id": 1, "$username": "aha", "$age": 18},
         ]
@@ -67,18 +67,27 @@ class TestKwilBehavior:
         tx_receipt = client.execute_action(db_id, "create_user", args)
         assert tx_receipt is not None, "expect tx_receipt is not None"
 
-    def _test_execute_query_action(self, db_name, client):
+    def _test_call_action(self, db_name, client):
         db_id = client.generate_dbi(client.wallet.address, db_name)
-        tx_receipt = client.execute_action(db_id, "list_users", [])
-        assert tx_receipt is not None, "expect tx_receipt is not None"
-        resp = tx_receipt["result"]
-        assert len(resp) > 0, "expect len(resp) > 0"
-        resp = resp[0]
-        assert (
-            resp["wallet"].lower() == client.wallet.address.lower()
-        ), f"expect resp['wallet'] == {client.wallet.address}"
+        resp = client.call_action(db_id, "user_post_count", {"$id": 1})
+        resp = resp["result"][0]
+        assert resp["count"] == 0, f"expect result.count == 1, got {resp['count']}"
+
+    def _test_call_action_mustsign(self, db_name, client):
+        db_id = client.generate_dbi(client.wallet.address, db_name)
+        resp = client.call_action(db_id, "view_user_info", {})
+        resp = resp["result"][0]
         assert resp["username"] == "aha", "expect resp['name'] == 'aha'"
         assert resp["age"] == 18, "expect resp['age'] == 18"
+
+    def _test_call_action_mustsign_without_sign(self, db_name, client):
+        wallet = client.wallet
+        client.wallet = None
+        with pytest.raises(Exception):
+            db_id = client.generate_dbi(client.wallet.address, db_name)
+            resp = client.call_action(db_id, "view_user_info", {}, False)
+
+        client.wallet = wallet
 
     def _test_listDatabase(self, db_name, client, count: int):
         db_list = client.list_databases()
@@ -98,8 +107,10 @@ class TestKwilBehavior:
         self._test_deployDatabase(client, schema_file)
         self._test_getSchema(db_name, client)
         self._test_listDatabase(db_name, client, 1)
-        self._test_execute_insert_action(db_name, client)
-        self._test_execute_query_action(db_name, client)
+        self._test_execute_action(db_name, client)
+        self._test_call_action(db_name, client)
+        self._test_call_action_mustsign(db_name, client)
+        self._test_call_action_mustsign_without_sign(db_name, client)
         self._test_query(db_name, client, 1)
         self._test_dropDatabase(db_name, client)
         self._test_listDatabase(db_name, client, 0)
@@ -117,12 +128,20 @@ class TestKwilBehavior:
         self._test_getSchema(db_name, client)
 
     @pytest.mark.skipif(non_interactive, reason="only interactive mode")
-    def test_execute_insert_action(self, db_name, client):
-        self._test_execute_insert_action(db_name, client)
+    def test_execute_action(self, db_name, client):
+        self._test_execute_action(db_name, client)
 
     @pytest.mark.skipif(non_interactive, reason="only interactive mode")
-    def test_execute_query_action(self, db_name, client):
-        self._test_execute_query_action(db_name, client)
+    def test_call_action(self, db_name, client):
+        self._test_call_action(db_name, client)
+
+    @pytest.mark.skipif(non_interactive, reason="only interactive mode")
+    def test_call_action_mustsign(self, db_name, client):
+        self._test_call_action_mustsign(db_name, client)
+
+    @pytest.mark.skipif(non_interactive, reason="only interactive mode")
+    def test_call_action_mustsign_without_sign(self, db_name, client):
+        self._test_call_action_mustsign_without_sign(db_name, client)
 
     @pytest.mark.skipif(non_interactive, reason="only interactive mode")
     def test_listDatabase(self, db_name, client):

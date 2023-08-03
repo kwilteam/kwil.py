@@ -1,11 +1,11 @@
 import base64
 import json
-from typing import Dict, Any, Callable
+from typing import Dict, Any, Callable, List
 
 from toolz import curry, compose, identity
 
 from kwil.types import RPCEndpoint
-from kwil._utils.rpcs import GRPC
+from kwil._utils.rpcs import RPC
 from kwil._utils.validation import request_validators
 
 
@@ -45,6 +45,10 @@ def tx_receipt_decode(response: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def query_decode(response: Dict[str, Any]) -> Dict[str, Any]:
+    if response["result"] == "":
+        response["result"] = {}
+        return response
+
     base64_response = response["result"]
     result = json.loads(base64.b64decode(base64_response))
     response["result"] = result
@@ -52,14 +56,15 @@ def query_decode(response: Dict[str, Any]) -> Dict[str, Any]:
 
 
 response_formatters: Dict[str, Callable[[Any], Any]] = {
-    GRPC.kwil_ping: ping_response_formatter,
-    GRPC.kwil_getSchema: extract_result("dataset"),
-    GRPC.kwil_getConfig: identity,
-    GRPC.kwil_getAccount: extract_result("account"),
-    GRPC.kwil_estimatePrice: extract_result("price"),
-    GRPC.kwil_broadcast: tx_receipt_decode,
-    GRPC.kwil_listDatabases: extract_result("databases"),
-    GRPC.kwil_query: query_decode,
+    RPC.kwil_ping: ping_response_formatter,
+    RPC.kwil_getSchema: extract_result("dataset"),
+    RPC.kwil_getConfig: identity,
+    RPC.kwil_getAccount: extract_result("account"),
+    RPC.kwil_estimatePrice: extract_result("price"),
+    RPC.kwil_broadcast: tx_receipt_decode,
+    RPC.kwil_listDatabases: extract_result("databases"),
+    RPC.kwil_query: query_decode,
+    RPC.kwil_call: query_decode,
 }
 
 
