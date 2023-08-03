@@ -33,7 +33,7 @@ def generate_tx_hash(
 def sign_tx(params: TxParam, wallet: LocalAccount) -> TxParam:
     tx_hash = generate_tx_hash(
         params["payload"],
-        params["payloadType"],
+        params["payload_type"],
         params["fee"],
         params["nonce"],
     )

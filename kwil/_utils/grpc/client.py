@@ -64,7 +64,7 @@ class Client:
             hash=tx.get("hash"),
             nonce=tx.get("nonce"),
             fee=tx.get("fee"),
-            payload_type=tx.get("payloadType"),
+            payload_type=tx.get("payload_type"),
             payload=tx.get("payload"),
             signature=tx.get("signature"),
             sender=tx.get("sender"),
@@ -77,7 +77,7 @@ class Client:
         gtx = tx_pb2.Tx(
             nonce=tx.get("nonce"),
             fee=tx.get("fee"),
-            payload_type=tx.get("payloadType"),
+            payload_type=tx.get("payload_type"),
             payload=tx.get("payload"),
         )
 

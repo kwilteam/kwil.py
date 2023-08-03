@@ -21,7 +21,7 @@ class TestKwilBehavior:
         with open(schema_file, "r") as f:
             db_schema_str = f.read()
             tx_params = TxParam(
-                payloadType=TxPayloadType.DEPLOY_DATABASE,
+                payload_type=TxPayloadType.DEPLOY_DATABASE,
                 payload=db_schema_str.encode("utf-8"),
                 nonce=Nonce(1),
             )

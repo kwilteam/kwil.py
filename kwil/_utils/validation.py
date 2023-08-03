@@ -69,22 +69,22 @@ def validate_tx_params(value: Any) -> None:
         validate_address(value["sender"])
 
     if "fee" in value and not isinstance(value["fee"], str):
-        raise TypeError("Fee must be provided as an integer")
+        raise TypeError("fee must be provided as an integer")
 
     if "nonce" in value and not isinstance(value["nonce"], int):
-        raise TypeError("Nonce must be provided as an integer")
+        raise TypeError("nonce must be provided as an integer")
 
-    if "payloadType" in value and not isinstance(value["payloadType"], int):
-        raise TypeError("PayloadType must be provided as a integer")
+    if "payload_type" in value and not isinstance(value["payload_type"], int):
+        raise TypeError("payload_type must be provided as a integer")
 
     if "payload" in value and not isinstance(value["payload"], bytes):
-        raise TypeError("Payload must be provided as a string")
+        raise TypeError("payload must be provided as a string")
 
     if "hash" in value and not isinstance(value["hash"], bytes):
-        raise TypeError("Hash must be provided as an bytes")
+        raise TypeError("hash must be provided as an bytes")
 
     if "signature" in value and not isinstance(value["signature"], dict):
-        raise TypeError("Signature must be provided as an bytes")
+        raise TypeError("signature must be provided as an bytes")
 
 
 def validate_call_params(value: Any) -> None:

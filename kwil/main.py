@@ -88,7 +88,7 @@ class Kwil(BaseKwil):
         account_info = self.kwild.get_account(self.wallet.address)
 
         tx_params = TxParam(
-            payloadType=payload_type,
+            payload_type=payload_type,
             payload=payload,
             sender=self.wallet.address,
             fee="0",

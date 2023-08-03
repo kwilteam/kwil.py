@@ -103,7 +103,7 @@ class Signature(TypedDict, total=True):
 
 class TxParam(TypedDict, total=False):
     hash: bytes
-    payloadType: TxPayloadType
+    payload_type: TxPayloadType
     payload: bytes
     fee: str
     nonce: Nonce
@@ -170,10 +170,9 @@ class DBSchema(TypedDict, total=False):
 
 
 class ChainConfig(TypedDict, total=False):
-    # TODO: snake case
-    chainCode: int
-    providerAddress: HexAddress
-    poolAddress: HexAddress
+    chain_code: int
+    provider_address: HexAddress
+    pool_address: HexAddress
 
 
 class ActionParamDataType(IntEnum):
@@ -189,7 +188,7 @@ class ActionParamDataType(IntEnum):
 
 class ActionParamValue(TypedDict, total=False):
     value: Any
-    dataType: ActionParamDataType
+    data_type: ActionParamDataType
     bytes: str
 
 

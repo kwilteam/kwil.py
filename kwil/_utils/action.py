@@ -33,7 +33,7 @@ def _encode_action_value(value: Any) -> ActionParamValue:
         encoded = encode_param(action_param_text_byte, value.encode())
         return ActionParamValue(
             value=value,
-            dataType=ActionParamDataType.TEXT,
+            data_type=ActionParamDataType.TEXT,
             bytes=encoded,
         )
     elif isinstance(value, int):
@@ -42,7 +42,7 @@ def _encode_action_value(value: Any) -> ActionParamValue:
         )
         return ActionParamValue(
             value=value,
-            dataType=ActionParamDataType.INT,
+            data_type=ActionParamDataType.INT,
             bytes=encoded,
         )
     else:
