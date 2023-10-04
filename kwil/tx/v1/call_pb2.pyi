@@ -6,14 +6,23 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class CallRequest(_message.Message):
-    __slots__ = ["payload", "sender", "signature"]
-    PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["body", "sender", "serialization", "signature"]
+    class Body(_message.Message):
+        __slots__ = ["description", "payload"]
+        DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+        PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+        description: str
+        payload: bytes
+        def __init__(self, description: _Optional[str] = ..., payload: _Optional[bytes] = ...) -> None: ...
+    BODY_FIELD_NUMBER: _ClassVar[int]
     SENDER_FIELD_NUMBER: _ClassVar[int]
+    SERIALIZATION_FIELD_NUMBER: _ClassVar[int]
     SIGNATURE_FIELD_NUMBER: _ClassVar[int]
-    payload: bytes
-    sender: str
+    body: CallRequest.Body
+    sender: bytes
+    serialization: str
     signature: _tx_pb2.Signature
-    def __init__(self, payload: _Optional[bytes] = ..., signature: _Optional[_Union[_tx_pb2.Signature, _Mapping]] = ..., sender: _Optional[str] = ...) -> None: ...
+    def __init__(self, body: _Optional[_Union[CallRequest.Body, _Mapping]] = ..., signature: _Optional[_Union[_tx_pb2.Signature, _Mapping]] = ..., sender: _Optional[bytes] = ..., serialization: _Optional[str] = ...) -> None: ...
 
 class CallResponse(_message.Message):
     __slots__ = ["result"]

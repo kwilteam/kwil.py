@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 from kwil.tx.v1 import tx_pb2 as kwil_dot_tx_dot_v1_dot_tx__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15kwil/tx/v1/call.proto\x12\x02tx\x1a\x13kwil/tx/v1/tx.proto\"P\n\x0b\x43\x61llRequest\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12 \n\tsignature\x18\x02 \x01(\x0b\x32\r.tx.Signature\x12\x0e\n\x06sender\x18\x03 \x01(\t\"\x1e\n\x0c\x43\x61llResponse\x12\x0e\n\x06result\x18\x01 \x01(\x0c\x42\x35Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15kwil/tx/v1/call.proto\x12\x02tx\x1a\x13kwil/tx/v1/tx.proto\"\xa8\x01\n\x0b\x43\x61llRequest\x12\"\n\x04\x62ody\x18\x01 \x01(\x0b\x32\x14.tx.CallRequest.Body\x12 \n\tsignature\x18\x02 \x01(\x0b\x32\r.tx.Signature\x12\x0e\n\x06sender\x18\x03 \x01(\x0c\x12\x15\n\rserialization\x18\x04 \x01(\t\x1a,\n\x04\x42ody\x12\x13\n\x0b\x64\x65scription\x18\x01 \x01(\t\x12\x0f\n\x07payload\x18\x02 \x01(\x0c\"\x1e\n\x0c\x43\x61llResponse\x12\x0e\n\x06result\x18\x01 \x01(\x0c\x42\x35Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'kwil.tx.v1.call_pb2', globals())
@@ -22,8 +22,10 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpb'
-  _CALLREQUEST._serialized_start=50
-  _CALLREQUEST._serialized_end=130
-  _CALLRESPONSE._serialized_start=132
-  _CALLRESPONSE._serialized_end=162
+  _CALLREQUEST._serialized_start=51
+  _CALLREQUEST._serialized_end=219
+  _CALLREQUEST_BODY._serialized_start=175
+  _CALLREQUEST_BODY._serialized_end=219
+  _CALLRESPONSE._serialized_start=221
+  _CALLRESPONSE._serialized_end=251
 # @@protoc_insertion_point(module_scope)

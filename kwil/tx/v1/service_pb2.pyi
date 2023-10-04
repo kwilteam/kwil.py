@@ -8,6 +8,8 @@ from kwil.tx.v1 import list_pb2 as _list_pb2
 from kwil.tx.v1 import dataset_pb2 as _dataset_pb2
 from kwil.tx.v1 import call_pb2 as _call_pb2
 from google.api import annotations_pb2 as _annotations_pb2
+from kwil.tx.v1 import validator_pb2 as _validator_pb2
+from kwil.tx.v1 import tx_query_pb2 as _tx_query_pb2
 from google.protobuf import descriptor as _descriptor
 from typing import ClassVar as _ClassVar
 

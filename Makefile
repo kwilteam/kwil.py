@@ -13,6 +13,9 @@ git-sync: ## sync git submodules
 	git submodule update --remote
 
 proto: protosrc ## generate python source from proto files and compile
+	## --python_out *_pb2.py
+	## --pyi_out *_pb2.pyi
+	## --grpc_python_out *_pb2_grpc.py
 	python -m grpc_tools.protoc -I ./proto --python_out=. --pyi_out=. --grpc_python_out=. ./proto/kwil/tx/v1/*.proto
 
 clean-build: ## remove build artifacts

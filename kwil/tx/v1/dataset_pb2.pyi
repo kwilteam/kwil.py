@@ -39,17 +39,22 @@ class Column(_message.Message):
     type: str
     def __init__(self, name: _Optional[str] = ..., type: _Optional[str] = ..., attributes: _Optional[_Iterable[_Union[Attribute, _Mapping]]] = ...) -> None: ...
 
-class Dataset(_message.Message):
-    __slots__ = ["actions", "name", "owner", "tables"]
-    ACTIONS_FIELD_NUMBER: _ClassVar[int]
+class Extensions(_message.Message):
+    __slots__ = ["alias", "initialization", "name"]
+    class ExtensionConfig(_message.Message):
+        __slots__ = ["argument", "value"]
+        ARGUMENT_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        argument: str
+        value: str
+        def __init__(self, argument: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
+    ALIAS_FIELD_NUMBER: _ClassVar[int]
+    INITIALIZATION_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    OWNER_FIELD_NUMBER: _ClassVar[int]
-    TABLES_FIELD_NUMBER: _ClassVar[int]
-    actions: _containers.RepeatedCompositeFieldContainer[Action]
+    alias: str
+    initialization: _containers.RepeatedCompositeFieldContainer[Extensions.ExtensionConfig]
     name: str
-    owner: str
-    tables: _containers.RepeatedCompositeFieldContainer[Table]
-    def __init__(self, owner: _Optional[str] = ..., name: _Optional[str] = ..., tables: _Optional[_Iterable[_Union[Table, _Mapping]]] = ..., actions: _Optional[_Iterable[_Union[Action, _Mapping]]] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., initialization: _Optional[_Iterable[_Union[Extensions.ExtensionConfig, _Mapping]]] = ..., alias: _Optional[str] = ...) -> None: ...
 
 class GetSchemaRequest(_message.Message):
     __slots__ = ["dbid"]
@@ -58,10 +63,10 @@ class GetSchemaRequest(_message.Message):
     def __init__(self, dbid: _Optional[str] = ...) -> None: ...
 
 class GetSchemaResponse(_message.Message):
-    __slots__ = ["dataset"]
-    DATASET_FIELD_NUMBER: _ClassVar[int]
-    dataset: Dataset
-    def __init__(self, dataset: _Optional[_Union[Dataset, _Mapping]] = ...) -> None: ...
+    __slots__ = ["schema"]
+    SCHEMA_FIELD_NUMBER: _ClassVar[int]
+    schema: Schema
+    def __init__(self, schema: _Optional[_Union[Schema, _Mapping]] = ...) -> None: ...
 
 class Index(_message.Message):
     __slots__ = ["columns", "name", "type"]
@@ -72,6 +77,20 @@ class Index(_message.Message):
     name: str
     type: str
     def __init__(self, name: _Optional[str] = ..., columns: _Optional[_Iterable[str]] = ..., type: _Optional[str] = ...) -> None: ...
+
+class Schema(_message.Message):
+    __slots__ = ["actions", "extensions", "name", "owner", "tables"]
+    ACTIONS_FIELD_NUMBER: _ClassVar[int]
+    EXTENSIONS_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    OWNER_FIELD_NUMBER: _ClassVar[int]
+    TABLES_FIELD_NUMBER: _ClassVar[int]
+    actions: _containers.RepeatedCompositeFieldContainer[Action]
+    extensions: _containers.RepeatedCompositeFieldContainer[Extensions]
+    name: str
+    owner: bytes
+    tables: _containers.RepeatedCompositeFieldContainer[Table]
+    def __init__(self, owner: _Optional[bytes] = ..., name: _Optional[str] = ..., tables: _Optional[_Iterable[_Union[Table, _Mapping]]] = ..., actions: _Optional[_Iterable[_Union[Action, _Mapping]]] = ..., extensions: _Optional[_Iterable[_Union[Extensions, _Mapping]]] = ...) -> None: ...
 
 class Table(_message.Message):
     __slots__ = ["columns", "indexes", "name"]

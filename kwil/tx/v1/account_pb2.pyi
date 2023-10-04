@@ -5,20 +5,20 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Account(_message.Message):
-    __slots__ = ["address", "balance", "nonce"]
-    ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["balance", "nonce", "public_key"]
     BALANCE_FIELD_NUMBER: _ClassVar[int]
     NONCE_FIELD_NUMBER: _ClassVar[int]
-    address: str
+    PUBLIC_KEY_FIELD_NUMBER: _ClassVar[int]
     balance: str
     nonce: int
-    def __init__(self, address: _Optional[str] = ..., balance: _Optional[str] = ..., nonce: _Optional[int] = ...) -> None: ...
+    public_key: bytes
+    def __init__(self, public_key: _Optional[bytes] = ..., balance: _Optional[str] = ..., nonce: _Optional[int] = ...) -> None: ...
 
 class GetAccountRequest(_message.Message):
-    __slots__ = ["address"]
-    ADDRESS_FIELD_NUMBER: _ClassVar[int]
-    address: str
-    def __init__(self, address: _Optional[str] = ...) -> None: ...
+    __slots__ = ["public_key"]
+    PUBLIC_KEY_FIELD_NUMBER: _ClassVar[int]
+    public_key: bytes
+    def __init__(self, public_key: _Optional[bytes] = ...) -> None: ...
 
 class GetAccountResponse(_message.Message):
     __slots__ = ["account"]

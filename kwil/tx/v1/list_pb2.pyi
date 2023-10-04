@@ -8,8 +8,8 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class ListDatabasesRequest(_message.Message):
     __slots__ = ["owner"]
     OWNER_FIELD_NUMBER: _ClassVar[int]
-    owner: str
-    def __init__(self, owner: _Optional[str] = ...) -> None: ...
+    owner: bytes
+    def __init__(self, owner: _Optional[bytes] = ...) -> None: ...
 
 class ListDatabasesResponse(_message.Message):
     __slots__ = ["databases"]

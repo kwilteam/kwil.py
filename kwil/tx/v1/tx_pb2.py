@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13kwil/tx/v1/tx.proto\x12\x02tx\"\x95\x01\n\x02Tx\x12\x0c\n\x04hash\x18\x01 \x01(\x0c\x12\"\n\x0cpayload_type\x18\x02 \x01(\x05R\x0cpayload_type\x12\x0f\n\x07payload\x18\x03 \x01(\x0c\x12\r\n\x05nonce\x18\x04 \x01(\x03\x12 \n\tsignature\x18\x05 \x01(\x0b\x32\r.tx.Signature\x12\x0b\n\x03\x66\x65\x65\x18\x06 \x01(\t\x12\x0e\n\x06sender\x18\x07 \x01(\t\"]\n\tSignature\x12(\n\x0fsignature_bytes\x18\x01 \x01(\x0cR\x0fsignature_bytes\x12&\n\x0esignature_type\x18\x02 \x01(\x05R\x0esignature_type\"7\n\tTxReceipt\x12\x0f\n\x07tx_hash\x18\x01 \x01(\x0c\x12\x0b\n\x03\x66\x65\x65\x18\x02 \x01(\t\x12\x0c\n\x04\x62ody\x18\x03 \x01(\x0c*\x85\x01\n\rSignatureType\x12\x19\n\x15INVALID_SINATURE_TYPE\x10\x00\x12\x1d\n\x19PK_SECP256K1_UNCOMPRESSED\x10\x01\x12\"\n\x1e\x41\x43\x43OUNT_SECP256K1_UNCOMPRESSED\x10\x02\x12\x16\n\x12\x45ND_SIGNATURE_TYPE\x10\x03\x42\x35Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13kwil/tx/v1/tx.proto\x12\x02tx\"\xf6\x01\n\x0bTransaction\x12\"\n\x04\x62ody\x18\x01 \x01(\x0b\x32\x14.tx.Transaction.Body\x12 \n\tsignature\x18\x02 \x01(\x0b\x32\r.tx.Signature\x12\x0e\n\x06sender\x18\x03 \x01(\x0c\x12\x15\n\rserialization\x18\x04 \x01(\t\x1az\n\x04\x42ody\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\"\n\x0cpayload_type\x18\x02 \x01(\tR\x0cpayload_type\x12\x0b\n\x03\x66\x65\x65\x18\x03 \x01(\t\x12\r\n\x05nonce\x18\x04 \x01(\x04\x12\x0c\n\x04salt\x18\x05 \x01(\x0c\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\"]\n\tSignature\x12(\n\x0fsignature_bytes\x18\x01 \x01(\x0cR\x0fsignature_bytes\x12&\n\x0esignature_type\x18\x02 \x01(\tR\x0esignature_type\"\x88\x01\n\x11TransactionResult\x12\x0c\n\x04\x63ode\x18\x01 \x01(\r\x12\x0b\n\x03log\x18\x02 \x01(\t\x12\x1a\n\x08gas_used\x18\x03 \x01(\x03R\x08gas_used\x12\x1e\n\ngas_wanted\x18\x04 \x01(\x03R\ngas_wanted\x12\x0c\n\x04\x64\x61ta\x18\x05 \x01(\x0c\x12\x0e\n\x06\x65vents\x18\x06 \x03(\x0c\"L\n\x11TransactionStatus\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0b\n\x03\x66\x65\x65\x18\x02 \x01(\t\x12\x0e\n\x06status\x18\x03 \x01(\t\x12\x0e\n\x06\x65rrors\x18\x04 \x03(\tB5Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpbb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'kwil.tx.v1.tx_pb2', globals())
@@ -21,12 +21,14 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'Z3github.com/kwilteam/kwil-db/api/protobuf/tx/v1;txpb'
-  _SIGNATURETYPE._serialized_start=332
-  _SIGNATURETYPE._serialized_end=465
-  _TX._serialized_start=28
-  _TX._serialized_end=177
-  _SIGNATURE._serialized_start=179
-  _SIGNATURE._serialized_end=272
-  _TXRECEIPT._serialized_start=274
-  _TXRECEIPT._serialized_end=329
+  _TRANSACTION._serialized_start=28
+  _TRANSACTION._serialized_end=274
+  _TRANSACTION_BODY._serialized_start=152
+  _TRANSACTION_BODY._serialized_end=274
+  _SIGNATURE._serialized_start=276
+  _SIGNATURE._serialized_end=369
+  _TRANSACTIONRESULT._serialized_start=372
+  _TRANSACTIONRESULT._serialized_end=508
+  _TRANSACTIONSTATUS._serialized_start=510
+  _TRANSACTIONSTATUS._serialized_end=586
 # @@protoc_insertion_point(module_scope)

@@ -8,8 +8,8 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class EstimatePriceRequest(_message.Message):
     __slots__ = ["tx"]
     TX_FIELD_NUMBER: _ClassVar[int]
-    tx: _tx_pb2.Tx
-    def __init__(self, tx: _Optional[_Union[_tx_pb2.Tx, _Mapping]] = ...) -> None: ...
+    tx: _tx_pb2.Transaction
+    def __init__(self, tx: _Optional[_Union[_tx_pb2.Transaction, _Mapping]] = ...) -> None: ...
 
 class EstimatePriceResponse(_message.Message):
     __slots__ = ["price"]

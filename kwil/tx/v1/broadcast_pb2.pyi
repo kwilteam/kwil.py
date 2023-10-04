@@ -8,11 +8,11 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class BroadcastRequest(_message.Message):
     __slots__ = ["tx"]
     TX_FIELD_NUMBER: _ClassVar[int]
-    tx: _tx_pb2.Tx
-    def __init__(self, tx: _Optional[_Union[_tx_pb2.Tx, _Mapping]] = ...) -> None: ...
+    tx: _tx_pb2.Transaction
+    def __init__(self, tx: _Optional[_Union[_tx_pb2.Transaction, _Mapping]] = ...) -> None: ...
 
 class BroadcastResponse(_message.Message):
-    __slots__ = ["receipt"]
-    RECEIPT_FIELD_NUMBER: _ClassVar[int]
-    receipt: _tx_pb2.TxReceipt
-    def __init__(self, receipt: _Optional[_Union[_tx_pb2.TxReceipt, _Mapping]] = ...) -> None: ...
+    __slots__ = ["tx_hash"]
+    TX_HASH_FIELD_NUMBER: _ClassVar[int]
+    tx_hash: bytes
+    def __init__(self, tx_hash: _Optional[bytes] = ...) -> None: ...

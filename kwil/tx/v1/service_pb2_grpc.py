@@ -11,6 +11,8 @@ from kwil.tx.v1 import list_pb2 as kwil_dot_tx_dot_v1_dot_list__pb2
 from kwil.tx.v1 import ping_pb2 as kwil_dot_tx_dot_v1_dot_ping__pb2
 from kwil.tx.v1 import price_pb2 as kwil_dot_tx_dot_v1_dot_price__pb2
 from kwil.tx.v1 import query_pb2 as kwil_dot_tx_dot_v1_dot_query__pb2
+from kwil.tx.v1 import tx_query_pb2 as kwil_dot_tx_dot_v1_dot_tx__query__pb2
+from kwil.tx.v1 import validator_pb2 as kwil_dot_tx_dot_v1_dot_validator__pb2
 
 
 class TxServiceStub(object):
@@ -62,10 +64,40 @@ class TxServiceStub(object):
                 request_serializer=kwil_dot_tx_dot_v1_dot_dataset__pb2.GetSchemaRequest.SerializeToString,
                 response_deserializer=kwil_dot_tx_dot_v1_dot_dataset__pb2.GetSchemaResponse.FromString,
                 )
+        self.ApproveValidator = channel.unary_unary(
+                '/tx.TxService/ApproveValidator',
+                request_serializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorApprovalRequest.SerializeToString,
+                response_deserializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorApprovalResponse.FromString,
+                )
+        self.ValidatorJoin = channel.unary_unary(
+                '/tx.TxService/ValidatorJoin',
+                request_serializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinRequest.SerializeToString,
+                response_deserializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinResponse.FromString,
+                )
+        self.ValidatorLeave = channel.unary_unary(
+                '/tx.TxService/ValidatorLeave',
+                request_serializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorLeaveRequest.SerializeToString,
+                response_deserializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorLeaveResponse.FromString,
+                )
+        self.ValidatorJoinStatus = channel.unary_unary(
+                '/tx.TxService/ValidatorJoinStatus',
+                request_serializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinStatusRequest.SerializeToString,
+                response_deserializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinStatusResponse.FromString,
+                )
+        self.CurrentValidators = channel.unary_unary(
+                '/tx.TxService/CurrentValidators',
+                request_serializer=kwil_dot_tx_dot_v1_dot_validator__pb2.CurrentValidatorsRequest.SerializeToString,
+                response_deserializer=kwil_dot_tx_dot_v1_dot_validator__pb2.CurrentValidatorsResponse.FromString,
+                )
         self.Call = channel.unary_unary(
                 '/tx.TxService/Call',
                 request_serializer=kwil_dot_tx_dot_v1_dot_call__pb2.CallRequest.SerializeToString,
                 response_deserializer=kwil_dot_tx_dot_v1_dot_call__pb2.CallResponse.FromString,
+                )
+        self.TxQuery = channel.unary_unary(
+                '/tx.TxService/TxQuery',
+                request_serializer=kwil_dot_tx_dot_v1_dot_tx__query__pb2.TxQueryRequest.SerializeToString,
+                response_deserializer=kwil_dot_tx_dot_v1_dot_tx__query__pb2.TxQueryResponse.FromString,
                 )
 
 
@@ -120,7 +152,43 @@ class TxServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ApproveValidator(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ValidatorJoin(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ValidatorLeave(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ValidatorJoinStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CurrentValidators(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def Call(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def TxQuery(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -169,10 +237,40 @@ def add_TxServiceServicer_to_server(servicer, server):
                     request_deserializer=kwil_dot_tx_dot_v1_dot_dataset__pb2.GetSchemaRequest.FromString,
                     response_serializer=kwil_dot_tx_dot_v1_dot_dataset__pb2.GetSchemaResponse.SerializeToString,
             ),
+            'ApproveValidator': grpc.unary_unary_rpc_method_handler(
+                    servicer.ApproveValidator,
+                    request_deserializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorApprovalRequest.FromString,
+                    response_serializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorApprovalResponse.SerializeToString,
+            ),
+            'ValidatorJoin': grpc.unary_unary_rpc_method_handler(
+                    servicer.ValidatorJoin,
+                    request_deserializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinRequest.FromString,
+                    response_serializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinResponse.SerializeToString,
+            ),
+            'ValidatorLeave': grpc.unary_unary_rpc_method_handler(
+                    servicer.ValidatorLeave,
+                    request_deserializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorLeaveRequest.FromString,
+                    response_serializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorLeaveResponse.SerializeToString,
+            ),
+            'ValidatorJoinStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.ValidatorJoinStatus,
+                    request_deserializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinStatusRequest.FromString,
+                    response_serializer=kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinStatusResponse.SerializeToString,
+            ),
+            'CurrentValidators': grpc.unary_unary_rpc_method_handler(
+                    servicer.CurrentValidators,
+                    request_deserializer=kwil_dot_tx_dot_v1_dot_validator__pb2.CurrentValidatorsRequest.FromString,
+                    response_serializer=kwil_dot_tx_dot_v1_dot_validator__pb2.CurrentValidatorsResponse.SerializeToString,
+            ),
             'Call': grpc.unary_unary_rpc_method_handler(
                     servicer.Call,
                     request_deserializer=kwil_dot_tx_dot_v1_dot_call__pb2.CallRequest.FromString,
                     response_serializer=kwil_dot_tx_dot_v1_dot_call__pb2.CallResponse.SerializeToString,
+            ),
+            'TxQuery': grpc.unary_unary_rpc_method_handler(
+                    servicer.TxQuery,
+                    request_deserializer=kwil_dot_tx_dot_v1_dot_tx__query__pb2.TxQueryRequest.FromString,
+                    response_serializer=kwil_dot_tx_dot_v1_dot_tx__query__pb2.TxQueryResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -321,6 +419,91 @@ class TxService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def ApproveValidator(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tx.TxService/ApproveValidator',
+            kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorApprovalRequest.SerializeToString,
+            kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorApprovalResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ValidatorJoin(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tx.TxService/ValidatorJoin',
+            kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinRequest.SerializeToString,
+            kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ValidatorLeave(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tx.TxService/ValidatorLeave',
+            kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorLeaveRequest.SerializeToString,
+            kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorLeaveResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ValidatorJoinStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tx.TxService/ValidatorJoinStatus',
+            kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinStatusRequest.SerializeToString,
+            kwil_dot_tx_dot_v1_dot_validator__pb2.ValidatorJoinStatusResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CurrentValidators(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tx.TxService/CurrentValidators',
+            kwil_dot_tx_dot_v1_dot_validator__pb2.CurrentValidatorsRequest.SerializeToString,
+            kwil_dot_tx_dot_v1_dot_validator__pb2.CurrentValidatorsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def Call(request,
             target,
             options=(),
@@ -334,5 +517,22 @@ class TxService(object):
         return grpc.experimental.unary_unary(request, target, '/tx.TxService/Call',
             kwil_dot_tx_dot_v1_dot_call__pb2.CallRequest.SerializeToString,
             kwil_dot_tx_dot_v1_dot_call__pb2.CallResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def TxQuery(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tx.TxService/TxQuery',
+            kwil_dot_tx_dot_v1_dot_tx__query__pb2.TxQueryRequest.SerializeToString,
+            kwil_dot_tx_dot_v1_dot_tx__query__pb2.TxQueryResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
