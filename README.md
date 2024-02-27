@@ -1,3 +1,5 @@
+NOTE: this SDK only works with kwil-db v0.3.0 and before. It's not under active development.
+
 # kwil.py
 
 [![PyPI - Version](https://img.shields.io/pypi/v/kwil.svg)](https://pypi.org/project/kwil)
