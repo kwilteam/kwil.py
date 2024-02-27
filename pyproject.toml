@@ -38,6 +38,7 @@ dev = [
   # lint
   "black>=23.3.0",
   "flake8>=4.0.1",
+  "mypy>=1.5.1",
   # build
   "twine>=4.0.2",
   "setuptools>=67.6.1",
@@ -47,6 +48,7 @@ dev = [
 linter = [
   "black>=23.3.0",
   "flake8>=4.0.1",
+  "mypy>=1.5.1",
   "types-setuptools>=67.6.0.0",
   "types-protobuf>=4.22.0.0",
 ]

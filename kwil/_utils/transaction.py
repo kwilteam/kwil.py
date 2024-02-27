@@ -38,7 +38,6 @@ def sign_tx(params: TxParam, wallet: LocalAccount) -> TxParam:
         params["nonce"],
     )
 
-    params["hash"] = tx_hash
     params["signature"] = sign(tx_hash, wallet.key)
     params["sender"] = wallet.address
     return params

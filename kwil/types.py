@@ -102,7 +102,6 @@ class Signature(TypedDict, total=True):
 
 
 class TxParam(TypedDict, total=False):
-    hash: bytes
     payload_type: TxPayloadType
     payload: bytes
     fee: str

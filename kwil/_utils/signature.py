@@ -46,3 +46,12 @@ def sign(data: bytes, private_key: HexStr) -> Signature:
     return Signature(
         signature_bytes=bytes(signature_byte_array), signature_type=signature_type
     )
+
+def sign_tx() -> Signature:
+    """
+    sign_tx signs a transaction body with the given private key.
+    """
+    pass
+
+def sign_msg() -> Signature:
+    pass

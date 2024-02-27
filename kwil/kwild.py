@@ -17,7 +17,7 @@ from kwil.types import (
 
 
 class BaseKwild(Module):
-    """Kwil Chain base class"""
+    """Base class for Kwil blockchain API"""
 
     logger = logging.getLogger("kwil.BaseKwild")
 

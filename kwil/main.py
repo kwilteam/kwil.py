@@ -1,11 +1,8 @@
 import json
-import hashlib
-import os
-from typing import Optional, Dict, Any, List, cast
+from typing import Optional, Dict, Any, List, cast, Callable
 
 from eth_account.signers.local import LocalAccount
 
-from kwil.exceptions import WalletNotSet
 from kwil.kwild import Kwild
 from kwil.provider import BaseProvider, GRPCProvider
 from kwil.manager import RequestManager as DefaultRequestManager
@@ -18,7 +15,6 @@ from kwil.types import (
     DBIdentifier,
     ExecuteActionPayload,
     CallActionPayload,
-    CallParam,
     ActionArg,
 )
 from kwil._utils.transaction import sign_tx
@@ -28,11 +24,20 @@ from kwil._utils.action import sign_call_action
 
 
 class BaseKwil:
+    """Base class for Kwil blockchain interface
+
+    Attributes:
+        GRPCProvider (class): The GRPCProvider class.
+        RequestManager (class): The DefaultRequestManager class.
+        kwild (Kwild): The Kwild instance.
+    """
+    # providers
     GRPCProvider = GRPCProvider
+
+    # manager
     RequestManager = DefaultRequestManager
 
     kwild: Kwild
-    web3: None
 
     @property
     def api(self) -> str:
@@ -50,17 +55,17 @@ class BaseKwil:
 
 
 class Kwil(BaseKwil):
-    """
-    Kwil expose .
-    """
+    """Kwil blockchain interface through sync API"""
 
     def __init__(
             self,
             provider: Optional[BaseProvider] = None,
             wallet: Optional[LocalAccount] = None,
+            _noncer: Optional[Callable[[], Nonce]] = None,
     ):
         self.manager = self.RequestManager(self, provider)
         self.kwild = Kwild(self)
+        self._noncer = _noncer
 
         if wallet:
             self._wallet = wallet
@@ -84,6 +89,13 @@ class Kwil(BaseKwil):
     def is_connected(self) -> bool:
         return self.kwil_provider.is_connected()
 
+    def _get_nonce(self) -> Nonce:
+        if self._noncer is not None:
+            return self._noncer()
+
+        account_info = self.kwild.get_account(self.wallet.address)
+        return Nonce(int(account_info["nonce"]) + 1)
+
     def _create_tx(self, payload_type: TxPayloadType, payload: bytes) -> TxParam:
         account_info = self.kwild.get_account(self.wallet.address)
 
@@ -93,7 +105,7 @@ class Kwil(BaseKwil):
             sender=self.wallet.address,
             fee="0",
             # SHOULD be done in result formatter
-            nonce=Nonce(int(account_info["nonce"]) + 1),
+            nonce=self._get_nonce(),
         )
 
         price = self.kwild.estimate_price(tx_params)
